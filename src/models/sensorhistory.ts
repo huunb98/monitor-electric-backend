@@ -1,24 +1,22 @@
-'use strict';
-
 import mongoose = require('mongoose');
 
 export interface ISensorHistory {
-  SensorId: string;
-  Log: Map<string, any>;
-  TimeStamp: Date;
+  sensorId: string;
+  log: Map<string, any>;
+  timeStamp: Date;
 }
-export interface ISensorDocument extends ISensorHistory, mongoose.Document {}
+export interface ISensorHistoryDocument extends ISensorHistory, mongoose.Document {}
 
 let sensorHistorySchema = new mongoose.Schema({
-  SensorId: String,
-  Log: {
+  sensorId: String,
+  log: {
     type: Map,
     of: Object,
   },
-  TimeStamp: {
+  timeStamp: {
     type: Date,
     default: Date.now,
   },
 });
 
-export const WarningHistorySchema = mongoose.model<ISensorDocument>('SensorHistory', sensorHistorySchema);
+export const SensorHistoryModel = mongoose.model<ISensorHistoryDocument>('SensorHistory', sensorHistorySchema);

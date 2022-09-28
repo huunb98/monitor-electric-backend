@@ -1,23 +1,21 @@
-'use strict';
-
 import mongoose = require('mongoose');
 
 export interface IUser {
-  Name: string;
-  Phone: string;
-  Service: string;
-  UserName: string;
-  PassWord: string;
+  name: string;
+  phone: string;
+  service: string;
+  userName: string;
+  passWord: string;
 }
 
 export interface IUserDocument extends IUser, mongoose.Document {}
 
 let userSchema = new mongoose.Schema({
-  Name: { type: String, require: true },
-  Phone: { type: String, require: true },
-  Service: { type: String, require: true },
-  UserName: { type: String, require: true },
-  PassWord: { type: String, require: true },
+  name: { type: String, require: true },
+  phone: { type: String, require: true },
+  service: { type: String, require: true },
+  userName: { type: String, require: true },
+  passWord: { type: String, require: true },
 });
 
 export const UserModel = mongoose.model<IUserDocument>('User', userSchema);

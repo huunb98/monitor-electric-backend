@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SensorModel = exports.ConnectStatus = exports.OperationMode = void 0;
 const mongoose = require("mongoose");
@@ -11,60 +11,57 @@ var OperationMode;
 var ConnectStatus;
 (function (ConnectStatus) {
     ConnectStatus[ConnectStatus["Active"] = 0] = "Active";
-    ConnectStatus[ConnectStatus["DisconnectGatway"] = 1] = "DisconnectGatway";
+    ConnectStatus[ConnectStatus["DisconnectGateway"] = 1] = "DisconnectGateway";
     ConnectStatus[ConnectStatus["DisconnectInternet"] = 2] = "DisconnectInternet";
 })(ConnectStatus = exports.ConnectStatus || (exports.ConnectStatus = {}));
 let sensorSchema = new mongoose.Schema({
-    SensorId: { type: String, require: true },
-    SensorName: { type: String, require: true },
-    Description: { type: String, require: false },
-    OperationMode: OperationMode,
-    ConnectStatus: {
-        type: ConnectStatus,
-        default: ConnectStatus.Active,
-    },
-    SystemId: { type: String, require: true, ref: 'System' },
-    GatewayId: { type: String, require: true, ref: 'Gateway' },
-    ThresHold: {
+    sensorId: { type: String, require: true },
+    sensorName: { type: String, require: true },
+    description: { type: String, require: false },
+    operationMode: { type: Number, require: true },
+    connectStatus: { type: Number, default: ConnectStatus.Active },
+    systemId: { type: String, require: true },
+    gatewayId: { type: String, require: true },
+    thresHold: {
         type: Object,
         of: {
-            Power: Number,
-            Temp: Number,
-            X: {
-                RmsAcc: Number,
-                RmsVel: Number,
-                RmsDis: Number,
-                MaxAcc: Number,
-                FirstPeak: Number,
-                SecondPeak: Number,
-                ThirdPeak: Number,
+            power: Number,
+            temp: Number,
+            x: {
+                rmsAcc: Number,
+                rmsVel: Number,
+                rmsDis: Number,
+                maxAcc: Number,
+                firstPeak: Number,
+                secondPeak: Number,
+                thirdPeak: Number,
             },
-            Y: {
-                RmsAcc: Number,
-                RmsVel: Number,
-                RmsDis: Number,
-                MaxAcc: Number,
-                FirstPeak: Number,
-                SecondPeak: Number,
-                ThirdPeak: Number,
+            y: {
+                rmsAcc: Number,
+                rmsVel: Number,
+                rmsDis: Number,
+                maxAcc: Number,
+                firstPeak: Number,
+                secondPeak: Number,
+                thirdPeak: Number,
             },
-            Z: {
-                RmsAcc: Number,
-                RmsVel: Number,
-                RmsDis: Number,
-                MaxAcc: Number,
-                FirstPeak: Number,
-                SecondPeak: Number,
-                ThirdPeak: Number,
+            z: {
+                rmsAcc: Number,
+                rmsVel: Number,
+                rmsDis: Number,
+                maxAcc: Number,
+                firstPeak: Number,
+                secondPeak: Number,
+                thirdPeak: Number,
             },
         },
     },
 });
-sensorSchema.index({ SensorId: 1 }, { sparse: true, background: true });
-sensorSchema.index({ GatewayId: 1 });
-sensorSchema.index({ SystemId: 1 });
+sensorSchema.index({ sensorId: 1 }, { sparse: true, background: true });
+sensorSchema.index({ gatewayId: 1 });
+sensorSchema.index({ systemId: 1 });
 sensorSchema.index({
-    SensorName: 'text',
+    sensorName: 'text',
 }, {
     sparse: true,
     background: true,

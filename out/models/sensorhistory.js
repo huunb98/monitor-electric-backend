@@ -1,17 +1,17 @@
-'use strict';
+"use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.WarningHistorySchema = void 0;
+exports.SensorHistoryModel = void 0;
 const mongoose = require("mongoose");
 let sensorHistorySchema = new mongoose.Schema({
-    SensorId: String,
-    Log: {
+    sensorId: String,
+    log: {
         type: Map,
         of: Object,
     },
-    TimeStamp: {
+    timeStamp: {
         type: Date,
         default: Date.now,
     },
 });
-exports.WarningHistorySchema = mongoose.model('SensorHistory', sensorHistorySchema);
+exports.SensorHistoryModel = mongoose.model('SensorHistory', sensorHistorySchema);
 //# sourceMappingURL=sensorhistory.js.map

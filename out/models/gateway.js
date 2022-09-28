@@ -8,23 +8,28 @@ var GatewayStatus;
     GatewayStatus[GatewayStatus["Disconnect"] = 1] = "Disconnect";
 })(GatewayStatus = exports.GatewayStatus || (exports.GatewayStatus = {}));
 let gatewaySchema = new mongoose.Schema({
-    GatewayId: { type: String, require: true },
-    Name: { type: String, require: true },
-    Description: JSON,
-    ConnectStatus: { type: GatewayStatus, default: GatewayStatus.Active },
-    SystemId: { type: mongoose.Schema.Types.ObjectId, require: true, ref: 'System' },
-    MqttStatus: { type: Number, require: true },
-    MqttIp: { type: Number, require: true },
-    MqttPort: { type: Number, require: true },
-    MqttTls: String,
-    Config: {
-        GatewayTopic: String,
-        GatewayMsg: String,
-        SensorTopic: String,
-        SensorMsg: String,
+    gatewayId: { type: String, require: true },
+    name: { type: String, require: true },
+    systemName: String,
+    description: Object,
+    connectStatus: { type: Number, default: GatewayStatus.Active },
+    systemId: { type: mongoose.Schema.Types.ObjectId, require: true, ref: 'System' },
+    mqttStatus: { type: Number, require: true },
+    mqttIp: { type: Number, require: true },
+    mqttPort: { type: Number, require: true },
+    mqttTls: String,
+    config: {
+        gatewayTopic: String,
+        gatewayMsg: String,
+        sensorTopic: String,
+        sensorMsg: String,
+    },
+    createDate: {
+        type: Date,
+        default: Date.now,
     },
 });
-gatewaySchema.index({ GatewayId: 1 }, { sparse: true, background: true });
-gatewaySchema.index({ SystemId: 1 });
+gatewaySchema.index({ gatewayId: 1 }, { sparse: true, background: true });
+gatewaySchema.index({ systemId: 1 });
 exports.GatewayModel = mongoose.model('Gateway', gatewaySchema);
 //# sourceMappingURL=gateway.js.map

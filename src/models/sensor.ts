@@ -1,5 +1,3 @@
-'use strict';
-
 import mongoose = require('mongoose');
 
 export enum OperationMode {
@@ -9,95 +7,92 @@ export enum OperationMode {
 }
 export enum ConnectStatus {
   Active = 0,
-  DisconnectGatway = 1,
+  DisconnectGateway = 1,
   DisconnectInternet = 2,
 }
 
 export interface ThresHoldStat {
-  RmsAcc: number;
-  RmsVel: number;
-  RmsDis: number;
-  MaxAcc: number;
-  FirstPeak: number;
-  SecondPeak: number;
-  ThirdPeak: number;
+  rmsAcc: number;
+  rmsVel: number;
+  rmsDis: number;
+  maxAcc: number;
+  firstPeak: number;
+  secondPeak: number;
+  thirdPeak: number;
 }
 
 export interface ThresHold {
-  Power: number;
-  Temp: number;
-  X: ThresHoldStat;
-  Y: ThresHoldStat;
-  Z: ThresHoldStat;
+  power: number;
+  temp: number;
+  x: ThresHoldStat;
+  y: ThresHoldStat;
+  z: ThresHoldStat;
 }
 
 export interface ISensor {
-  SensorId: string;
-  Name: string;
-  Description: string;
-  OperationMode: OperationMode;
-  ConnectStatus: ConnectStatus;
-  SystemId: string;
-  GatewayId: string;
-  ThresHold: ThresHold;
+  sensorId: string;
+  name: string;
+  description: string;
+  operationMode: OperationMode;
+  connectStatus: ConnectStatus;
+  systemId: string;
+  gatewayId: string;
+  thresHold: ThresHold;
 }
 
 export interface ISensorDocument extends ISensor, mongoose.Document {}
 
 let sensorSchema = new mongoose.Schema({
-  SensorId: { type: String, require: true },
-  SensorName: { type: String, require: true },
-  Description: { type: String, require: false },
-  OperationMode: OperationMode,
-  ConnectStatus: {
-    type: ConnectStatus,
-    default: ConnectStatus.Active,
-  },
-  SystemId: { type: String, require: true, ref: 'System' },
-  GatewayId: { type: String, require: true, ref: 'Gateway' },
-  ThresHold: {
+  sensorId: { type: String, require: true },
+  sensorName: { type: String, require: true },
+  description: { type: String, require: false },
+  operationMode: { type: Number, require: true },
+  connectStatus: { type: Number, default: ConnectStatus.Active },
+  systemId: { type: String, require: true },
+  gatewayId: { type: String, require: true },
+  thresHold: {
     type: Object,
     of: {
-      Power: Number,
-      Temp: Number,
-      X: {
-        RmsAcc: Number,
-        RmsVel: Number,
-        RmsDis: Number,
-        MaxAcc: Number,
-        FirstPeak: Number,
-        SecondPeak: Number,
-        ThirdPeak: Number,
+      power: Number,
+      temp: Number,
+      x: {
+        rmsAcc: Number,
+        rmsVel: Number,
+        rmsDis: Number,
+        maxAcc: Number,
+        firstPeak: Number,
+        secondPeak: Number,
+        thirdPeak: Number,
       },
-      Y: {
-        RmsAcc: Number,
-        RmsVel: Number,
-        RmsDis: Number,
-        MaxAcc: Number,
-        FirstPeak: Number,
-        SecondPeak: Number,
-        ThirdPeak: Number,
+      y: {
+        rmsAcc: Number,
+        rmsVel: Number,
+        rmsDis: Number,
+        maxAcc: Number,
+        firstPeak: Number,
+        secondPeak: Number,
+        thirdPeak: Number,
       },
-      Z: {
-        RmsAcc: Number,
-        RmsVel: Number,
-        RmsDis: Number,
-        MaxAcc: Number,
-        FirstPeak: Number,
-        SecondPeak: Number,
-        ThirdPeak: Number,
+      z: {
+        rmsAcc: Number,
+        rmsVel: Number,
+        rmsDis: Number,
+        maxAcc: Number,
+        firstPeak: Number,
+        secondPeak: Number,
+        thirdPeak: Number,
       },
     },
   },
 });
 
-sensorSchema.index({ SensorId: 1 }, { sparse: true, background: true });
-sensorSchema.index({ GatewayId: 1 });
-sensorSchema.index({ SystemId: 1 });
+sensorSchema.index({ sensorId: 1 }, { sparse: true, background: true });
+sensorSchema.index({ gatewayId: 1 });
+sensorSchema.index({ systemId: 1 });
 
 sensorSchema.index(
   {
-    SensorName: 'text',
+    sensorName: 'text',
   },
   {
     sparse: true,

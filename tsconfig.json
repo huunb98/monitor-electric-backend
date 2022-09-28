@@ -5,7 +5,6 @@
     "target": "es6",
     "module": "commonjs",
     "sourceMap": true,
-    "strict": true,
     "strictNullChecks": false,
     "esModuleInterop": true,
     "experimentalDecorators": true,

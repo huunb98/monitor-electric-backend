@@ -1,5 +1,3 @@
-'use strict';
-
 import mongoose = require('mongoose');
 
 export enum WarningCode {
@@ -11,21 +9,21 @@ export enum WarningCode {
 }
 
 export interface WarningHistory {
-  Sensor: string;
-  WarningCode: WarningCode;
-  WarningMsg: string;
+  sensorId: string;
+  warningCode: WarningCode;
+  warningMsg: string;
 }
 
 export interface IWarningHistoryDocument extends WarningHistory, mongoose.Document {}
 
 let warningSchema = new mongoose.Schema({
-  Sensor: { type: String, require: true },
-  WarningCode: { type: WarningCode, default: WarningCode.None },
-  WarningMsg: { type: String, require: true },
-  TimeStamp: { type: Date, default: Date.now },
+  sensorId: { type: String, require: true },
+  warningCode: { type: WarningCode, default: WarningCode.None },
+  warningMsg: { type: String, require: true },
+  timeStamp: { type: Date, default: Date.now },
 });
 
-warningSchema.index({ Sensor: 1 });
-warningSchema.index({ TimeStamp: -1 });
+warningSchema.index({ sensorId: 1 });
+warningSchema.index({ timeStamp: -1 });
 
-export const WarningHistorySchema = mongoose.model<IWarningHistoryDocument>('WarningHistory', warningSchema);
+export const WarningHistoryModel = mongoose.model<IWarningHistoryDocument>('WarningHistory', warningSchema);

@@ -1,49 +1,25 @@
-'use strict';
-
 import mongoose = require('mongoose');
 
-// let sensorSchema = new mongoose.Schema({
-//   SensorId: { type: String, require: true },
-//   SensorName: { type: String, require: true },
-//   Description: { type: String, require: false },
-//   SystemId: { type: mongoose.Schema.Types.ObjectId, require: true, ref: 'System' },
-//   GatewayId: { type: mongoose.Schema.Types.ObjectId, require: true, ref: 'Gateway' },
-// });
-
-// sensorSchema.index({ SensorId: 1 }, { sparse: true, background: true });
-
-// sensorSchema.index(
-//   {
-//     SensorName: 'text',
-//   },
-//   {
-//     sparse: true,
-//     background: true,
-//   }
-// );
-
-// export const SensorModel = mongoose.model('Sensor', sensorSchema);
-
 export interface ISytem {
-  Name: string;
-  Description: String;
-  CreatedAt: Date;
-  UpdatedAt: Date;
+  name: string;
+  description: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface ISystemDocument extends ISytem, mongoose.Document {}
 
 let systemSchema = new mongoose.Schema({
-  Name: { type: String, require: true },
-  Description: String,
-  CreatedAt: {
+  name: { type: String, require: true },
+  description: String,
+  createdAt: {
     type: Date,
     default: Date.now,
   },
-  UpdatedAt: {
+  updatedAt: {
     type: Date,
     default: Date.now,
   },
 });
 
-export const WarningHistorySchema = mongoose.model<ISystemDocument>('System', systemSchema);
+export const SystemModel = mongoose.model<ISystemDocument>('System', systemSchema);

@@ -1,6 +1,6 @@
-'use strict';
+"use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.WarningHistorySchema = exports.WarningCode = void 0;
+exports.WarningHistoryModel = exports.WarningCode = void 0;
 const mongoose = require("mongoose");
 var WarningCode;
 (function (WarningCode) {
@@ -11,12 +11,12 @@ var WarningCode;
     WarningCode[WarningCode["OverZ"] = 4] = "OverZ";
 })(WarningCode = exports.WarningCode || (exports.WarningCode = {}));
 let warningSchema = new mongoose.Schema({
-    Sensor: { type: String, require: true },
-    WarningCode: { type: WarningCode, default: WarningCode.None },
-    WarningMsg: { type: String, require: true },
-    TimeStamp: { type: Date, default: Date.now },
+    sensorId: { type: String, require: true },
+    warningCode: { type: WarningCode, default: WarningCode.None },
+    warningMsg: { type: String, require: true },
+    timeStamp: { type: Date, default: Date.now },
 });
-warningSchema.index({ Sensor: 1 });
-warningSchema.index({ TimeStamp: -1 });
-exports.WarningHistorySchema = mongoose.model('WarningHistory', warningSchema);
+warningSchema.index({ sensorId: 1 });
+warningSchema.index({ timeStamp: -1 });
+exports.WarningHistoryModel = mongoose.model('WarningHistory', warningSchema);
 //# sourceMappingURL=warninghistory.js.map

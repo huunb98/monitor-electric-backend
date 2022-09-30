@@ -26,4 +26,4 @@ class MessageBroker extends mqttBroker_1.MqttControler {
     }
 }
 exports.MessageBroker = MessageBroker;
-//# sourceMappingURL=MesageBroker.js.map
+//# sourceMappingURL=messageBroker.js.map

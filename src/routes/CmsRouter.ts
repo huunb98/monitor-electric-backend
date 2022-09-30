@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { cmsController } from '../controllers/CmsController';
+import { cmsController } from '../controllers/cmsController';
 var CmsRouter = Router();
 
 CmsRouter.post('/createSensor', (req, res) => {
@@ -12,10 +12,8 @@ CmsRouter.post('/createSensor', (req, res) => {
 });
 
 CmsRouter.post('/createGateway', (req, res) => {
-  if (!req.body.gatewayId) {
-    res.status(400).send('Invalid parameter');
-    return;
-  }
+  console.log('create gateway request');
+
   cmsController.createGateway(req, (err, rs) => {
     if (err) {
       res.status(400).send(err);
@@ -26,6 +24,15 @@ CmsRouter.post('/createGateway', (req, res) => {
 
 CmsRouter.post('/createSystem', (req, res) => {
   cmsController.createSystem(req, (err, rs) => {
+    if (err) {
+      res.status(400).send(err);
+      return;
+    } else res.send(rs);
+  });
+});
+
+CmsRouter.post('/createConfig', (req, res) => {
+  cmsController.createGatewayConfig(req, (err, rs) => {
     if (err) {
       res.status(400).send(err);
       return;

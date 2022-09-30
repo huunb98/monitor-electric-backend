@@ -4,18 +4,12 @@ const mongoConfig = require('./services/database/mongodb');
 
 const express = require('express');
 const bodyParser = require('body-parser');
-const http = require('http');
 const cors = require('cors');
 const app = express();
 
-import { messageBroker } from './controllers/MesageBroker';
-import CmsRouter from './routes/CmsRouter';
-
-/**
- * On lisnter message from topic
- */
-
-messageBroker.onMessageListener();
+import { MessageBroker } from './controllers/MesageBroker';
+import CmsRouter from './routes/cmsRouter';
+import { InitConfig } from './services/database/initConfig';
 
 app.use(cors());
 app.use(express.json());
@@ -30,8 +24,21 @@ app.use('/cms', CmsRouter);
 
 mongoConfig.connect(process.env.MongoDBUrl, async () => {
   console.log('Mongo Connected!');
+  initConfig();
 });
 
 app.listen(3000, () => {
   console.log('Server listening on port 3000');
 });
+
+/**
+ *  On listtenter message from topic
+ */
+
+async function initConfig() {
+  const results = await new InitConfig().GetGateConfig();
+
+  for (const index of results) {
+    new MessageBroker(index).onMessageListener();
+  }
+}

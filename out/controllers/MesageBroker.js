@@ -1,28 +1,29 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.messageBroker = void 0;
+exports.MessageBroker = void 0;
 const mqttBroker_1 = require("../services/broker/mqttBroker");
-const MessageControllter_1 = require("./MessageControllter");
+const messageController_1 = require("./messageController");
 class MessageBroker extends mqttBroker_1.MqttControler {
-    constructor() {
-        super();
-        this.initSubTopic();
+    constructor(config) {
+        super(config);
+        this.initSubTopic(config);
     }
-    initSubTopic() {
+    initSubTopic(config) {
         console.log('init subscrible default topic like gateway/#');
-        this.subscrible('gateway/#');
+        this.subscrible(config.gatewayTopic);
     }
     onMessageListener() {
         setTimeout(() => {
-            console.log('publishh');
-            this.client.publish('gateway/123/sensor/1234', 'hello mqtt');
+            this.client.publish('gateway/hn1231/sensor/2312h3ui', JSON.stringify({
+                tmp: 50,
+                rmax: 30,
+            }));
         }, 3000);
         console.log('on message listenser');
         this.client.on('message', function (topic, payload) {
-            MessageControllter_1.messageController.getRawData(topic, payload);
-            console.log(topic, payload.toString());
+            messageController_1.messageController.getRawData(topic, payload);
         });
     }
 }
-exports.messageBroker = new MessageBroker();
+exports.MessageBroker = MessageBroker;
 //# sourceMappingURL=MesageBroker.js.map

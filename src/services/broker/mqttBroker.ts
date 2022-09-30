@@ -1,17 +1,18 @@
 import mqtt from 'mqtt';
+import { GateWayConfigResult } from '../../helpers/gatewayCfgResults';
 
 export class MqttControler {
   protected client: mqtt.MqttClient;
 
-  constructor() {
-    this.intiConection();
+  constructor(config: GateWayConfigResult) {
+    this.initConection(config);
   }
 
-  private intiConection() {
+  private initConection(config: GateWayConfigResult) {
     console.log('mqtt connect');
     this.client = mqtt.connect({
-      host: '127.0.0.1',
-      port: 1883,
+      host: config.host,
+      port: config.port,
       protocol: 'mqtt',
     });
   }

@@ -20,8 +20,10 @@ let sensorSchema = new mongoose.Schema({
     description: { type: String, require: false },
     operationMode: { type: Number, require: true },
     connectStatus: { type: Number, default: ConnectStatus.Active },
-    systemId: { type: String, require: true },
+    systemId: { type: mongoose.Schema.Types.ObjectId, require: true, ref: 'System' },
     gatewayId: { type: String, require: true },
+    systemName: String,
+    gatewayName: String,
     thresHold: {
         type: Object,
         of: {
@@ -59,7 +61,6 @@ let sensorSchema = new mongoose.Schema({
 });
 sensorSchema.index({ sensorId: 1 }, { sparse: true, background: true });
 sensorSchema.index({ gatewayId: 1 });
-sensorSchema.index({ systemId: 1 });
 sensorSchema.index({
     sensorName: 'text',
 }, {

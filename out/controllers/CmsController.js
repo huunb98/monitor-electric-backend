@@ -4,17 +4,19 @@ exports.cmsController = void 0;
 const gateway_1 = require("../models/gateway");
 const sensor_1 = require("../models/sensor");
 const system_1 = require("../models/system");
+const gatewayconfig_1 = require("../models/gatewayconfig");
+const mongoose = require("mongoose");
 class CmsController {
     createGateway(req, callback) {
-        const { gatewayId, name, systemName, mqttStatus, mqttIp, mqttPort, config } = req.body;
+        const { gatewayId, name, systemName, systemId, mqttStatus, description, config } = req.body;
         const gateway = new gateway_1.GatewayModel({
             gatewayId: gatewayId,
             name: name,
+            description: description,
+            systemId: new mongoose.Types.ObjectId(systemId),
             systemName: systemName,
-            mqttStatus: mqttStatus,
-            mqttIp: mqttIp,
-            mqttPort: mqttPort,
-            config: config,
+            mqttStatus: +mqttStatus,
+            config: new mongoose.Types.ObjectId(config),
         });
         gateway
             .save()
@@ -28,15 +30,17 @@ class CmsController {
     }
     updateGateway() { }
     createSensor(req, callback) {
-        const { sensorId, sensorName, description, operationMode, connectStatus, systemId, gatewayId, thresHold } = req.body;
+        const { sensorId, sensorName, description, operationMode, connectStatus, systemId, gatewayId, thresHold, systemName, gatewayName } = req.body;
         const newSensor = new sensor_1.SensorModel({
             sensorId: sensorId,
             sensorName: sensorName,
             description: description,
             operationMode: operationMode,
             connectStatus: connectStatus,
-            systemId: systemId,
+            systemId: new mongoose.Types.ObjectId(systemId),
             gatewayId: gatewayId,
+            systemName: systemName,
+            gatewayName: gatewayName,
             thresHold: thresHold,
         });
         newSensor
@@ -64,6 +68,27 @@ class CmsController {
             callback(error.name, null);
         });
     }
+    createGatewayConfig(req, callback) {
+        const { mqttHost, mqttPort, mqttTls, gatewayTopic, gatewayMsg, sensorTopic, sensorMsg } = req.body;
+        const newConfig = new gatewayconfig_1.GatewayConfigModel({
+            mqttHost: mqttHost,
+            mqttPort: Number(mqttPort),
+            mqttTls: mqttTls,
+            gatewayTopic: gatewayTopic,
+            gatewayMsg: gatewayMsg,
+            sensorTopic: sensorTopic,
+            sensorMsg: sensorMsg,
+        });
+        newConfig
+            .save()
+            .then((_) => {
+            callback(null, 'Create Config Succeed');
+        })
+            .catch((error) => {
+            console.log(error);
+            callback(error.name, null);
+        });
+    }
 }
 exports.cmsController = new CmsController();
-//# sourceMappingURL=CmsController.js.map
+//# sourceMappingURL=cmsController.js.map

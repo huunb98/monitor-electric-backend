@@ -27,4 +27,4 @@ class LogController {
     }
 }
 exports.logController = new LogController();
-//# sourceMappingURL=LogController.js.map
+//# sourceMappingURL=logController.js.map

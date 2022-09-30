@@ -6,14 +6,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.MqttControler = void 0;
 const mqtt_1 = __importDefault(require("mqtt"));
 class MqttControler {
-    constructor() {
-        this.intiConection();
+    constructor(config) {
+        this.initConection(config);
     }
-    intiConection() {
+    initConection(config) {
         console.log('mqtt connect');
         this.client = mqtt_1.default.connect({
-            host: '127.0.0.1',
-            port: 1883,
+            host: config.host,
+            port: config.port,
             protocol: 'mqtt',
         });
     }

@@ -2,7 +2,7 @@ import { WarningCode, WarningHistoryModel } from '../models/warninghistory';
 import { SensorHistoryModel } from '../models/sensorhistory';
 
 class LogController {
-  logSensor(sensor: string, log: Map<string, any>) {
+  logSensor(sensor: string, log: Object) {
     const sensorHistory = new SensorHistoryModel({
       sensorId: sensor,
       log: log,

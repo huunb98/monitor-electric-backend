@@ -18,7 +18,7 @@ export interface IWarningHistoryDocument extends WarningHistory, mongoose.Docume
 
 let warningSchema = new mongoose.Schema({
   sensorId: { type: String, require: true },
-  warningCode: { type: WarningCode, default: WarningCode.None },
+  warningCode: { type: Number, default: WarningCode.None },
   warningMsg: { type: String, require: true },
   timeStamp: { type: Date, default: Date.now },
 });

@@ -10,20 +10,12 @@ var GatewayStatus;
 let gatewaySchema = new mongoose.Schema({
     gatewayId: { type: String, require: true },
     name: { type: String, require: true },
-    systemName: String,
     description: Object,
     connectStatus: { type: Number, default: GatewayStatus.Active },
     systemId: { type: mongoose.Schema.Types.ObjectId, require: true, ref: 'System' },
+    systemName: String,
     mqttStatus: { type: Number, require: true },
-    mqttIp: { type: Number, require: true },
-    mqttPort: { type: Number, require: true },
-    mqttTls: String,
-    config: {
-        gatewayTopic: String,
-        gatewayMsg: String,
-        sensorTopic: String,
-        sensorMsg: String,
-    },
+    config: { type: mongoose.Schema.Types.ObjectId, require: true, ref: 'GatewayConfig' },
     createDate: {
         type: Date,
         default: Date.now,

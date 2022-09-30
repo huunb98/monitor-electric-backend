@@ -2,21 +2,20 @@ import mongoose = require('mongoose');
 
 export interface ISensorHistory {
   sensorId: string;
-  log: Map<string, any>;
+  log: Object;
   timeStamp: Date;
 }
 export interface ISensorHistoryDocument extends ISensorHistory, mongoose.Document {}
 
 let sensorHistorySchema = new mongoose.Schema({
   sensorId: String,
-  log: {
-    type: Map,
-    of: Object,
-  },
+  log: Object,
   timeStamp: {
     type: Date,
     default: Date.now,
   },
 });
+
+sensorHistorySchema.index({ sensorId: 1 });
 
 export const SensorHistoryModel = mongoose.model<ISensorHistoryDocument>('SensorHistory', sensorHistorySchema);

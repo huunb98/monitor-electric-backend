@@ -15,8 +15,8 @@ class SendReport {
             port: 465,
             secure: true,
             auth: {
-                user: 'huunb@rocketstudio.com.vn',
-                pass: 'fgmsdbxmhucilcjn',
+                user: process.env.MailUsername,
+                pass: process.env.MailPassword,
             },
             logger: false,
         });

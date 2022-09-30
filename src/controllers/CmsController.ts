@@ -2,19 +2,21 @@ import { GatewayModel } from '../models/gateway';
 import { SensorModel } from '../models/sensor';
 import { SystemModel } from '../models/system';
 import { Request } from 'express';
+import { GatewayConfigModel } from '../models/gatewayconfig';
+import mongoose = require('mongoose');
 
 class CmsController {
   createGateway(req: Request, callback: Function) {
-    const { gatewayId, name, systemName, mqttStatus, mqttIp, mqttPort, config } = req.body;
+    const { gatewayId, name, systemName, systemId, mqttStatus, description, config } = req.body;
 
     const gateway = new GatewayModel({
       gatewayId: gatewayId,
       name: name,
+      description: description,
+      systemId: new mongoose.Types.ObjectId(systemId),
       systemName: systemName,
-      mqttStatus: mqttStatus,
-      mqttIp: mqttIp,
-      mqttPort: mqttPort,
-      config: config,
+      mqttStatus: +mqttStatus,
+      config: new mongoose.Types.ObjectId(config),
     });
 
     gateway
@@ -31,7 +33,7 @@ class CmsController {
   updateGateway() {}
 
   createSensor(req: Request, callback: Function) {
-    const { sensorId, sensorName, description, operationMode, connectStatus, systemId, gatewayId, thresHold } = req.body;
+    const { sensorId, sensorName, description, operationMode, connectStatus, systemId, gatewayId, thresHold, systemName, gatewayName } = req.body;
 
     const newSensor = new SensorModel({
       sensorId: sensorId,
@@ -39,8 +41,10 @@ class CmsController {
       description: description,
       operationMode: operationMode,
       connectStatus: connectStatus,
-      systemId: systemId,
+      systemId: new mongoose.Types.ObjectId(systemId),
       gatewayId: gatewayId,
+      systemName: systemName,
+      gatewayName: gatewayName,
       thresHold: thresHold,
     });
 
@@ -69,6 +73,30 @@ class CmsController {
     newSystem
       .save()
       .then((_) => callback(null, 'Create System Succeed'))
+      .catch((error) => {
+        console.log(error);
+        callback(error.name, null);
+      });
+  }
+
+  createGatewayConfig(req: Request, callback: Function) {
+    const { mqttHost, mqttPort, mqttTls, gatewayTopic, gatewayMsg, sensorTopic, sensorMsg } = req.body;
+
+    const newConfig = new GatewayConfigModel({
+      mqttHost: mqttHost,
+      mqttPort: Number(mqttPort),
+      mqttTls: mqttTls,
+      gatewayTopic: gatewayTopic,
+      gatewayMsg: gatewayMsg,
+      sensorTopic: sensorTopic,
+      sensorMsg: sensorMsg,
+    });
+
+    newConfig
+      .save()
+      .then((_) => {
+        callback(null, 'Create Config Succeed');
+      })
       .catch((error) => {
         console.log(error);
         callback(error.name, null);

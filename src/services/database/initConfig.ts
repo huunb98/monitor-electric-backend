@@ -1,9 +1,10 @@
 import { GateWayConfigResult } from '../../helpers/gatewayCfgResults';
 import { GatewayConfigModel } from '../../models/gatewayconfig';
+import { MessageBroker } from '../../controllers/messageBroker';
 
-export let listGatewayCfg: GateWayConfigResult[];
+export let mapBroker: Map<string, MessageBroker> = new Map<string, MessageBroker>();
 
-export class InitConfig {
+class InitConfig {
   async GetGateConfig(): Promise<GateWayConfigResult[]> {
     try {
       let response = await GatewayConfigModel.find({}).exec();
@@ -24,7 +25,6 @@ export class InitConfig {
           results.push(rs);
         }
       }
-      listGatewayCfg = results;
       return Promise.resolve(results);
     } catch (error) {
       console.log(error);
@@ -32,3 +32,12 @@ export class InitConfig {
     }
   }
 }
+
+export var initSubTopic = async function () {
+  const results = await new InitConfig().GetGateConfig();
+  for (const index of results) {
+    let broker = new MessageBroker(index);
+    mapBroker.set(index.host, broker);
+    mapBroker.get(index.host).onMessageListener();
+  }
+};

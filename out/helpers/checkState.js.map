@@ -1,0 +1,1 @@
+{"version":3,"file":"checkState.js","sourceRoot":"","sources":["../../src/helpers/checkState.ts"],"names":[],"mappings":";;;AAAA,MAAM,UAAU;IAAhB;QAEE,oBAAe,GAAW,CAAC,CAAC;IAC9B,CAAC;CAAA;AACD,MAAa,SAAU,SAAQ,UAAU;CAExC;AAFD,8BAEC;AACD,MAAa,UAAW,SAAQ,UAAU;IAA1C;;QACE,WAAM,GAAgB,IAAI,GAAG,EAAU,CAAC;IAC1C,CAAC;CAAA;AAFD,gCAEC"}

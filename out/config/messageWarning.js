@@ -1,0 +1,30 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.MsgWarning = void 0;
+var MsgWarning;
+(function (MsgWarning) {
+    MsgWarning["power"] = "Battery Low";
+    MsgWarning["temp"] = "Over Temperature";
+    MsgWarning["x_rms_ACC_mg"] = "X over value";
+    MsgWarning["x_max_ACC_mg"] = "X over value";
+    MsgWarning["x_velocity_mm_sec"] = "X over value";
+    MsgWarning["x_displacement_mm"] = "X over value";
+    MsgWarning["x_peak_one_Hz"] = "X over value";
+    MsgWarning["x_peak_two_Hz"] = "X over value";
+    MsgWarning["x_peak_three_Hz"] = "X over value";
+    MsgWarning["y_rms_ACC_mg"] = "Y over value";
+    MsgWarning["y_max_ACC_mg"] = "Y over value";
+    MsgWarning["y_velocity_mm_sec"] = "Y over value";
+    MsgWarning["y_displacement_mm"] = "Y over value";
+    MsgWarning["y_peak_one_Hz"] = "Y over value";
+    MsgWarning["y_peak_two_Hz"] = "Y over value";
+    MsgWarning["y_peak_three_Hz"] = "Y over value";
+    MsgWarning["z_rms_ACC_mg"] = "Z over value";
+    MsgWarning["z_max_ACC_mg"] = "Z over value";
+    MsgWarning["z_velocity_mm_sec"] = "Z over value";
+    MsgWarning["z_displacement_mm"] = "Z over value";
+    MsgWarning["z_peak_one_Hz"] = "Z over value";
+    MsgWarning["z_peak_two_Hz"] = "Z over value";
+    MsgWarning["z_peak_three_Hz"] = "Z over value";
+})(MsgWarning = exports.MsgWarning || (exports.MsgWarning = {}));
+//# sourceMappingURL=messageWarning.js.map

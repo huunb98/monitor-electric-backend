@@ -16,9 +16,11 @@ var __asyncValues = (this && this.__asyncValues) || function (o) {
     function settle(resolve, reject, d, v) { Promise.resolve(v).then(function(v) { resolve({ value: v, done: d }); }, reject); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.InitConfig = exports.listGatewayCfg = void 0;
+exports.initSubTopic = exports.mapBroker = void 0;
 const gatewayCfgResults_1 = require("../../helpers/gatewayCfgResults");
 const gatewayconfig_1 = require("../../models/gatewayconfig");
+const messageBroker_1 = require("../../controllers/messageBroker");
+exports.mapBroker = new Map();
 class InitConfig {
     GetGateConfig() {
         var e_1, _a;
@@ -49,7 +51,6 @@ class InitConfig {
                         finally { if (e_1) throw e_1.error; }
                     }
                 }
-                exports.listGatewayCfg = results;
                 return Promise.resolve(results);
             }
             catch (error) {
@@ -59,5 +60,15 @@ class InitConfig {
         });
     }
 }
-exports.InitConfig = InitConfig;
+var initSubTopic = function () {
+    return __awaiter(this, void 0, void 0, function* () {
+        const results = yield new InitConfig().GetGateConfig();
+        for (const index of results) {
+            let broker = new messageBroker_1.MessageBroker(index);
+            exports.mapBroker.set(index.host, broker);
+            exports.mapBroker.get(index.host).onMessageListener();
+        }
+    });
+};
+exports.initSubTopic = initSubTopic;
 //# sourceMappingURL=initConfig.js.map

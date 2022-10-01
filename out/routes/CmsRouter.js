@@ -44,6 +44,16 @@ CmsRouter.post('/createConfig', (req, res) => {
             res.send(rs);
     });
 });
+CmsRouter.post('/reloadConfig', (req, res) => {
+    cmsController_1.cmsController.reloadConfig((err, rs) => {
+        if (err) {
+            res.status(400).send(err);
+            return;
+        }
+        else
+            res.send(rs);
+    });
+});
 CmsRouter.post('/updateGateway', (req, res) => { });
 CmsRouter.post('/updateSensor', (req, res) => { });
 exports.default = CmsRouter;

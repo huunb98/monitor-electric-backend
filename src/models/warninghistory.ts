@@ -3,9 +3,11 @@ import mongoose = require('mongoose');
 export enum WarningCode {
   None = 0,
   OverTemp = 1,
-  OverX = 2,
-  OverY = 3,
-  OverZ = 4,
+  BatteryLow = 2,
+  OverX = 3,
+  OverY = 4,
+  OverZ = 5,
+  Disconected = 6,
 }
 
 export interface WarningHistory {

@@ -21,14 +21,15 @@ class SendReport {
             logger: false,
         });
     }
-    sendMailReport(title, text, receiver) {
+    sendMailReport(title, text, receiver, cc) {
         try {
             this.transporter.sendMail({
                 from: {
-                    name: 'HuuNB',
+                    name: 'Warning Service Notify',
                     address: 'huunb@rocketstudio.com.vn',
                 },
                 to: receiver,
+                cc: cc,
                 subject: title,
                 text: text,
             });

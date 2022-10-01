@@ -6,9 +6,11 @@ var WarningCode;
 (function (WarningCode) {
     WarningCode[WarningCode["None"] = 0] = "None";
     WarningCode[WarningCode["OverTemp"] = 1] = "OverTemp";
-    WarningCode[WarningCode["OverX"] = 2] = "OverX";
-    WarningCode[WarningCode["OverY"] = 3] = "OverY";
-    WarningCode[WarningCode["OverZ"] = 4] = "OverZ";
+    WarningCode[WarningCode["BatteryLow"] = 2] = "BatteryLow";
+    WarningCode[WarningCode["OverX"] = 3] = "OverX";
+    WarningCode[WarningCode["OverY"] = 4] = "OverY";
+    WarningCode[WarningCode["OverZ"] = 5] = "OverZ";
+    WarningCode[WarningCode["Disconected"] = 6] = "Disconected";
 })(WarningCode = exports.WarningCode || (exports.WarningCode = {}));
 let warningSchema = new mongoose.Schema({
     sensorId: { type: String, require: true },

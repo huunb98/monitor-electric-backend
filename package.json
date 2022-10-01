@@ -20,7 +20,8 @@
     "http": "^0.0.1-security",
     "mongoose": "^6.6.1",
     "mqtt": "^4.3.7",
-    "node-mailer": "^0.1.1"
+    "node-mailer": "^0.1.1",
+    "node-schedule": "^2.1.0"
   },
   "devDependencies": {
     "@types/express": "^4.17.14",

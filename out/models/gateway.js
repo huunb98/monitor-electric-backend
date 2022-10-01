@@ -8,7 +8,7 @@ var GatewayStatus;
     GatewayStatus[GatewayStatus["Disconnect"] = 1] = "Disconnect";
 })(GatewayStatus = exports.GatewayStatus || (exports.GatewayStatus = {}));
 let gatewaySchema = new mongoose.Schema({
-    gatewayId: { type: String, require: true },
+    _id: { type: String, require: true },
     name: { type: String, require: true },
     description: Object,
     connectStatus: { type: Number, default: GatewayStatus.Active },
@@ -21,7 +21,6 @@ let gatewaySchema = new mongoose.Schema({
         default: Date.now,
     },
 });
-gatewaySchema.index({ gatewayId: 1 }, { sparse: true, background: true });
 gatewaySchema.index({ systemId: 1 });
 exports.GatewayModel = mongoose.model('Gateway', gatewaySchema);
 //# sourceMappingURL=gateway.js.map

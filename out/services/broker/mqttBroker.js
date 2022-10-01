@@ -14,7 +14,7 @@ class MqttControler {
         this.client = mqtt_1.default.connect({
             host: config.host,
             port: config.port,
-            protocol: 'mqtt',
+            protocol: 'tcp',
         });
     }
     subscrible(topic) {
@@ -25,6 +25,10 @@ class MqttControler {
     }
     unsubscrible(topic) {
         this.client.unsubscribe(topic);
+    }
+    disconnect() {
+        console.log('client disconnected');
+        this.client.end();
     }
 }
 exports.MqttControler = MqttControler;

@@ -18,7 +18,6 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const app = express();
-const MesageBroker_1 = require("./controllers/MesageBroker");
 const cmsRouter_1 = __importDefault(require("./routes/cmsRouter"));
 const initConfig_1 = require("./services/database/initConfig");
 app.use(cors());
@@ -30,20 +29,9 @@ app.use(bodyParser.urlencoded({
 app.use('/cms', cmsRouter_1.default);
 mongoConfig.connect(process.env.MongoDBUrl, () => __awaiter(void 0, void 0, void 0, function* () {
     console.log('Mongo Connected!');
-    initConfig();
+    (0, initConfig_1.initSubTopic)();
 }));
 app.listen(3000, () => {
     console.log('Server listening on port 3000');
 });
-/**
- *  On listtenter message from topic
- */
-function initConfig() {
-    return __awaiter(this, void 0, void 0, function* () {
-        const results = yield new initConfig_1.InitConfig().GetGateConfig();
-        for (const index of results) {
-            new MesageBroker_1.MessageBroker(index).onMessageListener();
-        }
-    });
-}
 //# sourceMappingURL=index.js.map

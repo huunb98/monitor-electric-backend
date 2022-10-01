@@ -18,7 +18,7 @@ class LogController {
     const warningHistory = new WarningHistoryModel({
       sensorId: sensorId,
       warningCode: warningCode,
-      msg: msg,
+      warningMsg: msg,
     });
     warningHistory
       .save()

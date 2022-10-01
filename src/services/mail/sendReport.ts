@@ -1,7 +1,7 @@
 import nodeMailer from 'nodemailer';
 
 export class SendReport {
-  transporter: nodeMailer.Transporter;
+  private transporter: nodeMailer.Transporter;
 
   constructor() {
     this.initTransport();
@@ -20,14 +20,15 @@ export class SendReport {
     });
   }
 
-  sendMailReport(title: string, text: string, receiver: string) {
+  sendMailReport(title: string, text: string, receiver: string, cc: string[] | null) {
     try {
       this.transporter.sendMail({
         from: {
-          name: 'HuuNB',
+          name: 'Warning Service Notify',
           address: 'huunb@rocketstudio.com.vn',
         },
         to: receiver,
+        cc: cc,
         subject: title,
         text: text,
       });

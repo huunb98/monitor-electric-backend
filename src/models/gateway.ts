@@ -24,7 +24,7 @@ interface IGateway {
 export interface IGatewayDocument extends IGateway, mongoose.Document {}
 
 let gatewaySchema = new mongoose.Schema({
-  gatewayId: { type: String, require: true },
+  _id: { type: String, require: true },
   name: { type: String, require: true },
   description: Object,
   connectStatus: { type: Number, default: GatewayStatus.Active },
@@ -38,7 +38,6 @@ let gatewaySchema = new mongoose.Schema({
   },
 });
 
-gatewaySchema.index({ gatewayId: 1 }, { sparse: true, background: true });
 gatewaySchema.index({ systemId: 1 });
 
 export const GatewayModel = mongoose.model<IGatewayDocument>('Gateway', gatewaySchema);

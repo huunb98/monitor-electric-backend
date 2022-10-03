@@ -14,7 +14,11 @@ class MqttControler {
         this.client = mqtt_1.default.connect({
             host: config.host,
             port: config.port,
-            protocol: 'tcp',
+            protocol: 'mqtt',
+        });
+        setTimeout(() => {
+            console.log(config);
+            console.log(this.client.connected);
         });
     }
     subscrible(topic) {

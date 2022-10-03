@@ -37,8 +37,6 @@ class DeviceControllter {
         console.log('STATE SENSOR DISCONNECT ++');
         if (value.disconnectCount < 2) this.changeStateSensor(key, ConnectStatus.DisconnectGateway);
 
-        logController.logWarning(key, WarningCode.Disconected, `Sensor has disconnected ${(now - value.lastUpdate) / 1000} seconds`);
-
         if (value.disconnectCount === 10 || value.disconnectCount < 2) {
           let msg = `Sensor ${key} disconected, check it now\n\nDeveloper Team`;
           console.log(msg);
@@ -56,6 +54,12 @@ class DeviceControllter {
   }
   changeStateSensor(id: string, state: ConnectStatus) {
     SensorModel.updateOne({ _id: id }, { $set: { connectStatus: state } })
+      .then((_) => console.log('Change State Sensor'))
+      .catch((error) => console.log(error));
+  }
+
+  changWaringSensor(id: string, code: WarningCode) {
+    SensorModel.updateOne({ _id: id }, { $set: { warningCode: code } })
       .then((_) => console.log('Change State Sensor'))
       .catch((error) => console.log(error));
   }

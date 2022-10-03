@@ -9,7 +9,7 @@ let sensorHistorySchema = new mongoose.Schema({
         type: Date,
         default: Date.now,
     },
-});
+}, { collection: 'SensorHistory' });
 sensorHistorySchema.index({ sensorId: 1 });
 exports.SensorHistoryModel = mongoose.model('SensorHistory', sensorHistorySchema);
 //# sourceMappingURL=sensorhistory.js.map

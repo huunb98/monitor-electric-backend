@@ -1,14 +1,14 @@
 require('dotenv').config({ path: __dirname + '/../.env' });
 
-const mongoConfig = require('./services/database/mongodb');
-
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const app = express();
-
+import { Database } from './services/database/mongodb';
 import CmsRouter from './routes/cmsRouter';
 import { initSubTopic } from './services/database/initConfig';
+
+const database = new Database();
 
 app.use(cors());
 app.use(express.json());
@@ -21,7 +21,7 @@ app.use(
 
 app.use('/cms', CmsRouter);
 
-mongoConfig.connect(process.env.MongoDBUrl, async () => {
+database.connectMongoDb(async () => {
   console.log('Mongo Connected!');
   initSubTopic();
 });

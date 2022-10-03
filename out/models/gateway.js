@@ -20,7 +20,7 @@ let gatewaySchema = new mongoose.Schema({
         type: Date,
         default: Date.now,
     },
-});
+}, { collection: 'Gateway' });
 gatewaySchema.index({ systemId: 1 });
 exports.GatewayModel = mongoose.model('Gateway', gatewaySchema);
 //# sourceMappingURL=gateway.js.map

@@ -165,6 +165,7 @@ class MessageController {
       console.log(rs);
       if (rs) {
         logController.logWarning(msg.sensorId, warningCode, rs);
+        deviceController.changWaringSensor(msg.sensorId, warningCode);
         let text = 'Hi Admin, \n';
         text += `System active not right - Sensor ${msg.sensorId} detected \n`;
         text += rs;
@@ -176,7 +177,7 @@ class MessageController {
 
   private async getThresHold(sensorId: string) {
     try {
-      const results = await SensorModel.findOne({ sensorId: sensorId }, { thresHold: 1 }).exec();
+      const results = await SensorModel.findOne({ _id: sensorId }, { thresHold: 1 }).exec();
       return results.thresHold;
     } catch (error) {
       console.log(error);

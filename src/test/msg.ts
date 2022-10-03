@@ -33,3 +33,4 @@ export let msg = {
     z_peak_three_Hz: 0,
   },
 };
+console.log(JSON.stringify(msg));

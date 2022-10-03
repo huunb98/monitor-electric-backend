@@ -7,7 +7,6 @@ export enum WarningCode {
   OverX = 3,
   OverY = 4,
   OverZ = 5,
-  Disconected = 6,
 }
 
 export interface WarningHistory {
@@ -18,12 +17,15 @@ export interface WarningHistory {
 
 export interface IWarningHistoryDocument extends WarningHistory, mongoose.Document {}
 
-let warningSchema = new mongoose.Schema({
-  sensorId: { type: String, require: true },
-  warningCode: { type: Number, default: WarningCode.None },
-  warningMsg: { type: String, require: true },
-  timeStamp: { type: Date, default: Date.now },
-});
+let warningSchema = new mongoose.Schema(
+  {
+    sensorId: { type: String, require: true },
+    warningCode: { type: Number, default: WarningCode.None },
+    warningMsg: { type: String, require: true },
+    timeStamp: { type: Date, default: Date.now },
+  },
+  { collection: 'WarningHistory' }
+);
 
 warningSchema.index({ sensorId: 1 });
 warningSchema.index({ timeStamp: -1 });

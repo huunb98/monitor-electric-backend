@@ -18,7 +18,7 @@ class ScheduleJobController {
             return __awaiter(this, void 0, void 0, function* () {
                 deviceController_1.deviceController.checkStateGateway();
             });
-        }, 20000);
+        }, 50000);
     }
     checkSensor() {
         setInterval(function () {

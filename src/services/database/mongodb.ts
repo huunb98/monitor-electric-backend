@@ -1,21 +1,21 @@
-const mongoose = require('mongoose');
+import mongoose = require('mongoose');
 
-let mongodb;
+export class Database {
+  private uri: string = process.env.Host + '/' + process.env.MongoDbName;
+  private user: string = process.env.MongoDbUser;
+  private pass: string = process.env.MongoDbPass;
 
-function connect(url, callback) {
-  mongoose.connect(url, {}, (err, db) => {
-    if (err) console.log(err);
-    else {
-      mongodb = db;
-      callback();
-    }
-  });
+  connectMongoDb(callback: Function) {
+    mongoose.connect(
+      this.uri,
+      {
+        user: this.user,
+        pass: this.pass,
+      },
+      (error) => {
+        if (error === null) callback('');
+        else console.log(error);
+      }
+    );
+  }
 }
-function get() {
-  return mongodb;
-}
-
-module.exports = {
-  connect,
-  get,
-};

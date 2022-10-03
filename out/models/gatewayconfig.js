@@ -10,6 +10,6 @@ const gatewayConfigSchema = new mongoose.Schema({
     gatewayMsg: String,
     sensorTopic: String,
     sensorMsg: String,
-});
+}, { collection: 'GatewayConfig' });
 exports.GatewayConfigModel = mongoose.model('GatewayConfig', gatewayConfigSchema);
 //# sourceMappingURL=gatewayconfig.js.map

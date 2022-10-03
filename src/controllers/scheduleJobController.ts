@@ -7,7 +7,7 @@ class ScheduleJobController {
     console.log('job schedule');
     setInterval(async function () {
       deviceController.checkStateGateway();
-    }, 20000);
+    }, 50000);
   }
 
   checkSensor() {

@@ -13,6 +13,6 @@ let systemSchema = new mongoose.Schema({
         type: Date,
         default: Date.now,
     },
-});
+}, { collection: 'System' });
 exports.SystemModel = mongoose.model('System', systemSchema);
 //# sourceMappingURL=system.js.map

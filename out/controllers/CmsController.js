@@ -31,10 +31,10 @@ class CmsController {
     }
     updateGateway() { }
     createSensor(req, callback) {
-        const { sensorId, sensorName, description, operationMode, connectStatus, systemId, gatewayId, thresHold, systemName, gatewayName } = req.body;
+        const { sensorId, name, description, operationMode, connectStatus, systemId, gatewayId, thresHold, systemName, gatewayName } = req.body;
         const newSensor = new sensor_1.SensorModel({
             _id: sensorId,
-            sensorName: sensorName,
+            name: name,
             description: description,
             operationMode: operationMode,
             connectStatus: connectStatus,

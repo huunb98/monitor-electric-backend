@@ -14,14 +14,17 @@ interface IGatewayConfig {
 
 export interface IGatewayConfigDocument extends IGatewayConfig, mongoose.Document {}
 
-const gatewayConfigSchema = new mongoose.Schema({
-  mqttHost: String,
-  mqttPort: Number,
-  mqttTls: String,
-  gatewayTopic: String,
-  gatewayMsg: String,
-  sensorTopic: String,
-  sensorMsg: String,
-});
+const gatewayConfigSchema = new mongoose.Schema(
+  {
+    mqttHost: String,
+    mqttPort: Number,
+    mqttTls: String,
+    gatewayTopic: String,
+    gatewayMsg: String,
+    sensorTopic: String,
+    sensorMsg: String,
+  },
+  { collection: 'GatewayConfig' }
+);
 
 export const GatewayConfigModel = mongoose.model<IGatewayConfigDocument>('GatewayConfig', gatewayConfigSchema);

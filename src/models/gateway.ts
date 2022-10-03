@@ -23,20 +23,23 @@ interface IGateway {
 
 export interface IGatewayDocument extends IGateway, mongoose.Document {}
 
-let gatewaySchema = new mongoose.Schema({
-  _id: { type: String, require: true },
-  name: { type: String, require: true },
-  description: Object,
-  connectStatus: { type: Number, default: GatewayStatus.Active },
-  systemId: { type: mongoose.Schema.Types.ObjectId, require: true, ref: 'System' },
-  systemName: String,
-  mqttStatus: { type: Number, require: true },
-  config: { type: mongoose.Schema.Types.ObjectId, require: true, ref: 'GatewayConfig' },
-  createDate: {
-    type: Date,
-    default: Date.now,
+let gatewaySchema = new mongoose.Schema(
+  {
+    _id: { type: String, require: true },
+    name: { type: String, require: true },
+    description: Object,
+    connectStatus: { type: Number, default: GatewayStatus.Active },
+    systemId: { type: mongoose.Schema.Types.ObjectId, require: true, ref: 'System' },
+    systemName: String,
+    mqttStatus: { type: Number, require: true },
+    config: { type: mongoose.Schema.Types.ObjectId, require: true, ref: 'GatewayConfig' },
+    createDate: {
+      type: Date,
+      default: Date.now,
+    },
   },
-});
+  { collection: 'Gateway' }
+);
 
 gatewaySchema.index({ systemId: 1 });
 

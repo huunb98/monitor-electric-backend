@@ -1,5 +1,6 @@
 import mongoose = require('mongoose');
 import { ISystemDocument } from './system';
+import { WarningCode } from './warninghistory';
 
 export enum OperationMode {
   Raw = 0,
@@ -36,64 +37,74 @@ export interface ISensor {
   description: string;
   operationMode: OperationMode;
   connectStatus: ConnectStatus;
+  warningCode: WarningCode;
   systemId: ISystemDocument;
   gatewayId: string;
   thresHold: ThresHold;
+  createDate: Date;
 }
 
 export interface ISensorDocument extends ISensor, mongoose.Document {}
 
-let sensorSchema = new mongoose.Schema({
-  _id: { type: String, require: true },
-  sensorName: { type: String, require: true },
-  description: { type: String, require: false },
-  operationMode: { type: Number, require: true },
-  connectStatus: { type: Number, default: ConnectStatus.Active },
-  systemId: { type: mongoose.Schema.Types.ObjectId, require: true, ref: 'System' },
-  gatewayId: { type: String, require: true },
-  systemName: String,
-  gatewayName: String,
-  thresHold: {
-    type: Object,
-    of: {
-      power: Number,
-      temp: Number,
-      x: {
-        rmsAcc: Number,
-        rmsVel: Number,
-        rmsDis: Number,
-        maxAcc: Number,
-        firstPeak: Number,
-        secondPeak: Number,
-        thirdPeak: Number,
-      },
-      y: {
-        rmsAcc: Number,
-        rmsVel: Number,
-        rmsDis: Number,
-        maxAcc: Number,
-        firstPeak: Number,
-        secondPeak: Number,
-        thirdPeak: Number,
-      },
-      z: {
-        rmsAcc: Number,
-        rmsVel: Number,
-        rmsDis: Number,
-        maxAcc: Number,
-        firstPeak: Number,
-        secondPeak: Number,
-        thirdPeak: Number,
+let sensorSchema = new mongoose.Schema(
+  {
+    _id: { type: String, require: true },
+    name: { type: String, require: true },
+    description: { type: String, require: false },
+    operationMode: { type: Number, require: true },
+    connectStatus: { type: Number, default: ConnectStatus.Active },
+    warningCode: { type: Number, default: WarningCode.None },
+    systemId: { type: mongoose.Schema.Types.ObjectId, require: true, ref: 'System' },
+    gatewayId: { type: String, require: true },
+    systemName: String,
+    gatewayName: String,
+    thresHold: {
+      type: Object,
+      of: {
+        power: Number,
+        temp: Number,
+        x: {
+          rmsAcc: Number,
+          rmsVel: Number,
+          rmsDis: Number,
+          maxAcc: Number,
+          firstPeak: Number,
+          secondPeak: Number,
+          thirdPeak: Number,
+        },
+        y: {
+          rmsAcc: Number,
+          rmsVel: Number,
+          rmsDis: Number,
+          maxAcc: Number,
+          firstPeak: Number,
+          secondPeak: Number,
+          thirdPeak: Number,
+        },
+        z: {
+          rmsAcc: Number,
+          rmsVel: Number,
+          rmsDis: Number,
+          maxAcc: Number,
+          firstPeak: Number,
+          secondPeak: Number,
+          thirdPeak: Number,
+        },
       },
     },
+    createDate: {
+      type: Date,
+      default: Date.now,
+    },
   },
-});
+  { collection: 'Sensor' }
+);
 
 sensorSchema.index({ gatewayId: 1 });
 
 sensorSchema.index(
   {
-    sensorName: 'text',
+    name: 'text',
   },
   {
     unique: true,

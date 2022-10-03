@@ -4,8 +4,6 @@ exports.deviceController = void 0;
 const disconnect_1 = require("../config/disconnect");
 const gateway_1 = require("../models/gateway");
 const sensor_1 = require("../models/sensor");
-const warninghistory_1 = require("../models/warninghistory");
-const logController_1 = require("./logController");
 const messageController_1 = require("./messageController");
 class DeviceControllter {
     checkStateGateway() {
@@ -34,7 +32,6 @@ class DeviceControllter {
                 console.log('STATE SENSOR DISCONNECT ++');
                 if (value.disconnectCount < 2)
                     this.changeStateSensor(key, sensor_1.ConnectStatus.DisconnectGateway);
-                logController_1.logController.logWarning(key, warninghistory_1.WarningCode.Disconected, `Sensor has disconnected ${(now - value.lastUpdate) / 1000} seconds`);
                 if (value.disconnectCount === 10 || value.disconnectCount < 2) {
                     let msg = `Sensor ${key} disconected, check it now\n\nDeveloper Team`;
                     console.log(msg);
@@ -52,6 +49,11 @@ class DeviceControllter {
     }
     changeStateSensor(id, state) {
         sensor_1.SensorModel.updateOne({ _id: id }, { $set: { connectStatus: state } })
+            .then((_) => console.log('Change State Sensor'))
+            .catch((error) => console.log(error));
+    }
+    changWaringSensor(id, code) {
+        sensor_1.SensorModel.updateOne({ _id: id }, { $set: { warningCode: code } })
             .then((_) => console.log('Change State Sensor'))
             .catch((error) => console.log(error));
     }

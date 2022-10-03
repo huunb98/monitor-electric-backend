@@ -1,4 +1,4 @@
 export enum DisconectConfig {
-  Gateway = 60000,
-  Sensor = 30000,
+  Gateway = 120000,
+  Sensor = 60000,
 }

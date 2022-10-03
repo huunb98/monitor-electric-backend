@@ -21,7 +21,10 @@ class DeviceControllter {
 
           // new SendReport().sendMailReport('Gateway Disconect', msg, 'badboy1998hh@gmail.com', null);
         }
-        if (value.disconnectCount > 20) mapGateway.delete(key);
+        if (value.disconnectCount > 20) {
+          mapGateway.delete(key);
+          console.log('delete cache gateway', key);
+        }
       }
     });
   }
@@ -35,14 +38,17 @@ class DeviceControllter {
       if (now - value.lastUpdate > DisconectConfig.Sensor && gatewayState) {
         mapSensor.get(key).disconnectCount++;
         console.log('STATE SENSOR DISCONNECT ++');
-        if (value.disconnectCount < 2) this.changeStateSensor(key, ConnectStatus.DisconnectGateway);
+        if (value.disconnectCount < 2) this.changeConnectStateSensor(key, ConnectStatus.DisconnectGateway);
 
         if (value.disconnectCount === 10 || value.disconnectCount < 2) {
           let msg = `Sensor ${key} disconected, check it now\n\nDeveloper Team`;
           console.log(msg);
           // new SendReport().sendMailReport('Sensor Disconect', msg, 'badboy1998hh@gmail.com', null);
         }
-        if (value.disconnectCount > 20) mapSensor.delete(key);
+        if (value.disconnectCount > 20) {
+          mapSensor.delete(key);
+          console.log('delete cache sensor', key);
+        }
       }
     });
   }
@@ -52,13 +58,14 @@ class DeviceControllter {
       .then((_) => console.log('Change State Gateway'))
       .catch((error) => console.log(error));
   }
-  changeStateSensor(id: string, state: ConnectStatus) {
+
+  changeConnectStateSensor(id: string, state: ConnectStatus) {
     SensorModel.updateOne({ _id: id }, { $set: { connectStatus: state } })
       .then((_) => console.log('Change State Sensor'))
       .catch((error) => console.log(error));
   }
 
-  changWaringSensor(id: string, code: WarningCode) {
+  changWarningSensor(id: string, code: WarningCode) {
     SensorModel.updateOne({ _id: id }, { $set: { warningCode: code } })
       .then((_) => console.log('Change State Sensor'))
       .catch((error) => console.log(error));

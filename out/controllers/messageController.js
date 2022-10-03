@@ -45,8 +45,6 @@ class MessageController {
                 logController_1.logController.logSensor(key, data[key]);
                 const gateway = topic.split('/')[1];
                 this.updateDevice(gateway, key);
-                console.log(exports.mapGateway);
-                console.log(exports.mapSensor);
                 const result = data[key];
                 msg.sensorId = key;
                 msg.power = result.battery_level;
@@ -95,12 +93,13 @@ class MessageController {
                 gt.lastUpdate = Date.now();
                 gt.sensor.add(sensor);
                 exports.mapGateway.set(gateway, gt);
+                deviceController_1.deviceController.changeStateGateway(gateway, gateway_1.GatewayStatus.Active);
             }
             if (exports.mapSensor.has(sensor)) {
                 exports.mapSensor.get(sensor).lastUpdate = Date.now();
                 if (exports.mapSensor.get(sensor).disconnectCount) {
                     exports.mapSensor.get(sensor).disconnectCount = 0;
-                    deviceController_1.deviceController.changeStateSensor(sensor, sensor_1.ConnectStatus.Active);
+                    deviceController_1.deviceController.changeConnectStateSensor(sensor, sensor_1.ConnectStatus.Active);
                 }
                 exports.mapSensor.get(sensor).disconnectCount = 0;
             }
@@ -109,6 +108,7 @@ class MessageController {
                 ss.lastUpdate = Date.now();
                 ss.gateway = gateway;
                 exports.mapSensor.set(sensor, ss);
+                deviceController_1.deviceController.changeConnectStateSensor(sensor, sensor_1.ConnectStatus.Active);
             }
         }
         catch (error) {
@@ -162,13 +162,13 @@ class MessageController {
                 console.log(rs);
                 if (rs) {
                     logController_1.logController.logWarning(msg.sensorId, warningCode, rs);
-                    deviceController_1.deviceController.changWaringSensor(msg.sensorId, warningCode);
                     let text = 'Hi Admin, \n';
                     text += `System active not right - Sensor ${msg.sensorId} detected \n`;
                     text += rs;
                     text += '\nDeveloper Team';
                     // sendReport.sendMailReport('Sensor Warning', text, 'badboy1998hh@gmail.com', null);
                 }
+                deviceController_1.deviceController.changWarningSensor(msg.sensorId, warningCode);
             }
         });
     }

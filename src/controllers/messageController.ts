@@ -38,10 +38,6 @@ class MessageController {
 
       this.updateDevice(gateway, key);
 
-      console.log(mapGateway);
-
-      console.log(mapSensor);
-
       const result = data[key];
 
       msg.sensorId = key;
@@ -92,13 +88,14 @@ class MessageController {
         gt.lastUpdate = Date.now();
         gt.sensor.add(sensor);
         mapGateway.set(gateway, gt);
+        deviceController.changeStateGateway(gateway, GatewayStatus.Active);
       }
 
       if (mapSensor.has(sensor)) {
         mapSensor.get(sensor).lastUpdate = Date.now();
         if (mapSensor.get(sensor).disconnectCount) {
           mapSensor.get(sensor).disconnectCount = 0;
-          deviceController.changeStateSensor(sensor, ConnectStatus.Active);
+          deviceController.changeConnectStateSensor(sensor, ConnectStatus.Active);
         }
         mapSensor.get(sensor).disconnectCount = 0;
       } else {
@@ -106,6 +103,7 @@ class MessageController {
         ss.lastUpdate = Date.now();
         ss.gateway = gateway;
         mapSensor.set(sensor, ss);
+        deviceController.changeConnectStateSensor(sensor, ConnectStatus.Active);
       }
     } catch (error) {
       console.log('-- update device error --', error);
@@ -165,13 +163,13 @@ class MessageController {
       console.log(rs);
       if (rs) {
         logController.logWarning(msg.sensorId, warningCode, rs);
-        deviceController.changWaringSensor(msg.sensorId, warningCode);
         let text = 'Hi Admin, \n';
         text += `System active not right - Sensor ${msg.sensorId} detected \n`;
         text += rs;
         text += '\nDeveloper Team';
         // sendReport.sendMailReport('Sensor Warning', text, 'badboy1998hh@gmail.com', null);
       }
+      deviceController.changWarningSensor(msg.sensorId, warningCode);
     }
   }
 

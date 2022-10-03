@@ -16,9 +16,8 @@ export class MqttControler {
       protocol: 'mqtt',
     });
     setTimeout(() => {
-      console.log(config);
       console.log(this.client.connected);
-    });
+    }, 3000);
   }
 
   protected subscrible(topic: string) {

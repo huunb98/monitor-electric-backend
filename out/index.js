@@ -18,7 +18,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const app = express();
 const mongodb_1 = require("./services/database/mongodb");
-const cmsRouter_1 = __importDefault(require("./routes/cmsRouter"));
+const cmsRouters_1 = __importDefault(require("./routes/cmsRouters"));
 const initConfig_1 = require("./services/database/initConfig");
 const database = new mongodb_1.Database();
 app.use(cors());
@@ -27,7 +27,7 @@ app.use(bodyParser.urlencoded({
     extended: true,
     limit: '5mb',
 }));
-app.use('/cms', cmsRouter_1.default);
+app.use('/cms', cmsRouters_1.default);
 database.connectMongoDb(() => __awaiter(void 0, void 0, void 0, function* () {
     console.log('Mongo Connected!');
     (0, initConfig_1.initSubTopic)();

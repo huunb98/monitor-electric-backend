@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const app = express();
 import { Database } from './services/database/mongodb';
-import CmsRouter from './routes/cmsRouter';
+import CmsRouter from './routes/cmsRouters';
 import { initSubTopic } from './services/database/initConfig';
 
 const database = new Database();

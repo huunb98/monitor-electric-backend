@@ -32,7 +32,7 @@ database.connectMongoDb(() => __awaiter(void 0, void 0, void 0, function* () {
     console.log('Mongo Connected!');
     (0, initConfig_1.initSubTopic)();
 }));
-app.listen(3000, () => {
-    console.log('Server listening on port 3000');
+app.listen(8888, () => {
+    console.log('Server listening on port 8888');
 });
 //# sourceMappingURL=index.js.map

@@ -69,7 +69,6 @@ sensorSchema.index({ gatewayId: 1 });
 sensorSchema.index({
     name: 'text',
 }, {
-    unique: true,
     sparse: true,
     background: true,
 });

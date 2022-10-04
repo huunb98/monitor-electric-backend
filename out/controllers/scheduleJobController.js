@@ -13,7 +13,6 @@ exports.scheduleJobControllter = void 0;
 const deviceController_1 = require("./deviceController");
 class ScheduleJobController {
     checkGateway() {
-        console.log('job schedule');
         setInterval(function () {
             return __awaiter(this, void 0, void 0, function* () {
                 deviceController_1.deviceController.checkStateGateway();
@@ -25,7 +24,7 @@ class ScheduleJobController {
             return __awaiter(this, void 0, void 0, function* () {
                 deviceController_1.deviceController.checkStateSensor();
             });
-        }, 30000);
+        }, 20000);
     }
 }
 exports.scheduleJobControllter = new ScheduleJobController();

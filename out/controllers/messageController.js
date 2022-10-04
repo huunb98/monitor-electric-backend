@@ -159,7 +159,7 @@ class MessageController {
                     rs += messageWarning_1.MsgWarning.z_rms_ACC_mg + '\n';
                     warningCode = warninghistory_1.WarningCode.OverZ;
                 }
-                console.log(rs);
+                //  console.log(rs);
                 if (rs) {
                     logController_1.logController.logWarning(msg.sensorId, warningCode, rs);
                     let text = 'Hi Admin, \n';
@@ -176,7 +176,10 @@ class MessageController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const results = yield sensor_1.SensorModel.findOne({ _id: sensorId }, { thresHold: 1 }).exec();
-                return results.thresHold;
+                if (results)
+                    return results.thresHold;
+                else
+                    return null;
             }
             catch (error) {
                 console.log(error);

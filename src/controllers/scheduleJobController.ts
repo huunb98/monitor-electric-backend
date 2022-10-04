@@ -4,7 +4,6 @@ import { deviceController } from './deviceController';
 
 class ScheduleJobController {
   checkGateway() {
-    console.log('job schedule');
     setInterval(async function () {
       deviceController.checkStateGateway();
     }, 50000);
@@ -13,7 +12,7 @@ class ScheduleJobController {
   checkSensor() {
     setInterval(async function () {
       deviceController.checkStateSensor();
-    }, 30000);
+    }, 20000);
   }
 }
 export const scheduleJobControllter = new ScheduleJobController();

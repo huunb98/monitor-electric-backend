@@ -29,9 +29,9 @@ class DeviceControllter {
         const now = Date.now();
         messageController_1.mapSensor.forEach((value, key) => {
             const gatewayState = now - messageController_1.mapGateway.get(value.gateway).lastUpdate < disconnect_1.DisconectConfig.Gateway;
-            if (now - value.lastUpdate > disconnect_1.DisconectConfig.Sensor && gatewayState) {
+            if (now - value.lastUpdate >= disconnect_1.DisconectConfig.Sensor && gatewayState) {
                 messageController_1.mapSensor.get(key).disconnectCount++;
-                console.log('STATE SENSOR DISCONNECT ++');
+                // console.log('STATE SENSOR DISCONNECT ++');
                 if (value.disconnectCount < 2)
                     this.changeConnectStateSensor(key, sensor_1.ConnectStatus.DisconnectGateway);
                 if (value.disconnectCount === 10 || value.disconnectCount < 2) {

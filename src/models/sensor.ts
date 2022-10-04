@@ -107,7 +107,6 @@ sensorSchema.index(
     name: 'text',
   },
   {
-    unique: true,
     sparse: true,
     background: true,
   }

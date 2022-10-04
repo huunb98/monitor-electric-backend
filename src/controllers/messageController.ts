@@ -160,7 +160,7 @@ class MessageController {
         warningCode = WarningCode.OverZ;
       }
 
-      console.log(rs);
+      //  console.log(rs);
       if (rs) {
         logController.logWarning(msg.sensorId, warningCode, rs);
         let text = 'Hi Admin, \n';
@@ -176,7 +176,8 @@ class MessageController {
   private async getThresHold(sensorId: string) {
     try {
       const results = await SensorModel.findOne({ _id: sensorId }, { thresHold: 1 }).exec();
-      return results.thresHold;
+      if (results) return results.thresHold;
+      else return null;
     } catch (error) {
       console.log(error);
       return null;

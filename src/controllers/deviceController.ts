@@ -3,7 +3,7 @@ import { GatewayModel, GatewayStatus } from '../models/gateway';
 import { ConnectStatus, SensorModel } from '../models/sensor';
 import { WarningCode } from '../models/warninghistory';
 import { SendReport } from '../services/mail/sendReport';
-import { logController } from './logController';
+import { logController } from './logControllers';
 import { mapGateway, mapSensor } from './messageController';
 
 class DeviceControllter {

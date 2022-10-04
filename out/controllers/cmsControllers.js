@@ -98,4 +98,4 @@ class CmsController {
     }
 }
 exports.cmsController = new CmsController();
-//# sourceMappingURL=cmsController.js.map
+//# sourceMappingURL=cmsControllers.js.map

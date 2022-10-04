@@ -1,6 +1,6 @@
 import { IdResult } from '../helpers/idResults';
 import { ConnectStatus, SensorModel } from '../models/sensor';
-import { logController } from './logController';
+import { logController } from './logControllers';
 import { mapBroker, initSubTopic } from '../services/database/initConfig';
 import { MessageReportResults } from '../helpers/msgReportResults';
 import { MsgWarning } from '../config/messageWarning';

@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.messageController = exports.mapSensor = exports.mapGateway = void 0;
 const idResults_1 = require("../helpers/idResults");
 const sensor_1 = require("../models/sensor");
-const logController_1 = require("./logController");
+const logControllers_1 = require("./logControllers");
 const initConfig_1 = require("../services/database/initConfig");
 const msgReportResults_1 = require("../helpers/msgReportResults");
 const messageWarning_1 = require("../config/messageWarning");
@@ -42,7 +42,7 @@ class MessageController {
                 let msg = new msgReportResults_1.MessageReportResults();
                 let data = JSON.parse(payload);
                 let key = Object.keys(data)[0];
-                logController_1.logController.logSensor(key, data[key]);
+                logControllers_1.logController.logSensor(key, data[key]);
                 const gateway = topic.split('/')[1];
                 this.updateDevice(gateway, key);
                 const result = data[key];
@@ -161,7 +161,7 @@ class MessageController {
                 }
                 //  console.log(rs);
                 if (rs) {
-                    logController_1.logController.logWarning(msg.sensorId, warningCode, rs);
+                    logControllers_1.logController.logWarning(msg.sensorId, warningCode, rs);
                     let text = 'Hi Admin, \n';
                     text += `System active not right - Sensor ${msg.sensorId} detected \n`;
                     text += rs;

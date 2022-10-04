@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { cmsController } from '../controllers/cmsController';
+import { cmsController } from '../controllers/cmsControllers';
 var CmsRouter = Router();
 
 CmsRouter.post('/createSensor', (req, res) => {

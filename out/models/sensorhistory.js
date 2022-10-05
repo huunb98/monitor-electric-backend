@@ -11,5 +11,6 @@ let sensorHistorySchema = new mongoose.Schema({
     },
 }, { collection: 'SensorHistory' });
 sensorHistorySchema.index({ sensorId: 1 });
+sensorHistorySchema.index({ timeStamp: -1 });
 exports.SensorHistoryModel = mongoose.model('SensorHistory', sensorHistorySchema);
 //# sourceMappingURL=sensorhistory.js.map

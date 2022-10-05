@@ -20,5 +20,6 @@ let sensorHistorySchema = new mongoose.Schema(
 );
 
 sensorHistorySchema.index({ sensorId: 1 });
+sensorHistorySchema.index({ timeStamp: -1 });
 
 export const SensorHistoryModel = mongoose.model<ISensorHistoryDocument>('SensorHistory', sensorHistorySchema);

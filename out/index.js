@@ -17,9 +17,15 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const app = express();
+const http = require("http");
+const socketIO = require("socket.io");
 const mongodb_1 = require("./services/database/mongodb");
 const cmsRouters_1 = __importDefault(require("./routes/cmsRouters"));
 const initConfig_1 = require("./services/database/initConfig");
+let httpServer = new http.Server(app);
+let io = socketIO(httpServer, {
+    transports: ['websocket'],
+});
 const database = new mongodb_1.Database();
 app.use(cors());
 app.use(express.json());
@@ -32,7 +38,19 @@ database.connectMongoDb(() => __awaiter(void 0, void 0, void 0, function* () {
     console.log('Mongo Connected!');
     (0, initConfig_1.initSubTopic)();
 }));
-app.listen(8888, () => {
-    console.log('Server listening on port 8888');
+app.listen(8000, () => {
+    console.log('Server listening on port 8000');
+});
+httpServer.listen(1168, function () {
+    console.log('listening on *:1168');
+});
+io.sockets.on('connection', (socket) => {
+    console.log('Client connected id ' + socket.id);
+    setTimeout(() => {
+        socket.emit('message', 'sensor 1 disconnected');
+    }, 3000);
+    socket.on('disconnected', () => {
+        socket.disconnected();
+    });
 });
 //# sourceMappingURL=index.js.map

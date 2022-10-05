@@ -172,7 +172,7 @@ class MessageController {
                     text += `System active not right - Sensor ${msg.sensorId} detected \n`;
                     text += rs;
                     text += '\nDeveloper Team';
-                    // sendReport.sendMailReport('Sensor Warning', text, 'badboy1998hh@gmail.com', null);
+                    sendReport.sendMailReport('Sensor Warning', text, 'nguyenkhue2608@gmail.com', null);
                 }
                 deviceController_1.deviceController.changWarningSensor(msg.sensorId, warningCode);
             }

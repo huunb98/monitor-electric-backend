@@ -10,6 +10,7 @@ import socketIO = require('socket.io');
 import { Database } from './services/database/mongodb';
 import CmsRouter from './routes/cmsRouters';
 import { initSubTopic } from './services/database/initConfig';
+import { eventService } from './services/event/event';
 
 let httpServer = new http.Server(app);
 let io = socketIO(httpServer, {
@@ -17,6 +18,8 @@ let io = socketIO(httpServer, {
 });
 
 const database = new Database();
+const socketPort = process.env.SocketPort;
+const httpPort = process.env.HttpPort;
 
 app.use(cors());
 app.use(express.json());
@@ -34,22 +37,25 @@ database.connectMongoDb(async () => {
   initSubTopic();
 });
 
-app.listen(8000, () => {
-  console.log('Server listening on port 8000');
+/**
+ * Listener warning for notify web
+ */
+
+eventService.onWarning(io);
+
+app.listen(httpPort, () => {
+  console.log('Http listening on port', httpPort);
 });
 
-httpServer.listen(1168, function () {
-  console.log('listening on *:1168');
+httpServer.listen(socketPort, function () {
+  console.log('Socket listening on port', socketPort);
 });
 
 io.sockets.on('connection', (socket) => {
   console.log('Client connected id ' + socket.id);
 
-  setTimeout(() => {
-    socket.emit('message', 'sensor 1 disconnected');
-  }, 3000);
-
-  socket.on('disconnected', () => {
-    socket.disconnected();
+  socket.on('disconnect', () => {
+    console.log(socket.id, ' disconnected');
+    socket.disconnect();
   });
 });

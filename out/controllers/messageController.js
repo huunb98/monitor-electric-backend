@@ -22,6 +22,8 @@ const checkState_1 = require("../helpers/checkState");
 const scheduleJobController_1 = require("./scheduleJobController");
 const deviceController_1 = require("./deviceController");
 const gateway_1 = require("../models/gateway");
+const notify_1 = require("../config/notify");
+const event_1 = require("../services/event/event");
 const sendReport = new sendReport_1.SendReport();
 exports.mapGateway = new Map();
 exports.mapSensor = new Map();
@@ -161,6 +163,10 @@ class MessageController {
                 }
                 //  console.log(rs);
                 if (rs) {
+                    let notify = new notify_1.NotifyWarning();
+                    notify.sensorId = msg.sensorId;
+                    notify.warningCode = warningCode;
+                    event_1.eventService.emitwarning(notify);
                     logControllers_1.logController.logWarning(msg.sensorId, warningCode, rs);
                     let text = 'Hi Admin, \n';
                     text += `System active not right - Sensor ${msg.sensorId} detected \n`;

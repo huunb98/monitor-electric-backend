@@ -19,7 +19,7 @@ class DeviceControllter {
           let msg = `Gateway ${key} disconected, check it now\n\nDeveloper Team`;
           console.log(msg);
 
-          // new SendReport().sendMailReport('Gateway Disconect', msg, 'badboy1998hh@gmail.com', null);
+          // new SendReport().sendMailReport('Gateway Disconect', msg, 'nguyenkhue2608@gmail.con', null);
         }
         if (value.disconnectCount > 20) {
           mapGateway.delete(key);
@@ -43,7 +43,7 @@ class DeviceControllter {
         if (value.disconnectCount === 10 || value.disconnectCount < 2) {
           let msg = `Sensor ${key} disconected, check it now\n\nDeveloper Team`;
           console.log(msg);
-          // new SendReport().sendMailReport('Sensor Disconect', msg, 'badboy1998hh@gmail.com', null);
+          // new SendReport().sendMailReport('Sensor Disconect', msg, 'nguyenkhue2608@gmail.con', null);
         }
         if (value.disconnectCount > 20) {
           mapSensor.delete(key);

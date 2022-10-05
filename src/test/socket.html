@@ -58,7 +58,7 @@
 
     <script>
       $(function () {
-        var socket = io('http://127.0.0.1:1168', { transports: ['websocket'] });
+        var socket = io('http://127.0.0.1:3978', { transports: ['websocket'] });
 
         socket.on('connect', function (arg) {
           console.log('connect');

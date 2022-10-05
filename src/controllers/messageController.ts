@@ -10,6 +10,8 @@ import { MapGateway, MapSensor } from '../helpers/checkState';
 import { scheduleJobControllter } from './scheduleJobController';
 import { deviceController } from './deviceController';
 import { GatewayStatus } from '../models/gateway';
+import { NotifyWarning } from '../config/notify';
+import { eventService } from '../services/event/event';
 
 const sendReport = new SendReport();
 
@@ -162,6 +164,11 @@ class MessageController {
 
       //  console.log(rs);
       if (rs) {
+        let notify = new NotifyWarning();
+        notify.sensorId = msg.sensorId;
+        notify.warningCode = warningCode;
+        eventService.emitwarning(notify);
+
         logController.logWarning(msg.sensorId, warningCode, rs);
         let text = 'Hi Admin, \n';
         text += `System active not right - Sensor ${msg.sensorId} detected \n`;

@@ -18,6 +18,8 @@ const sendReport = new SendReport();
 export var mapGateway: Map<string, MapGateway> = new Map<string, MapGateway>();
 export var mapSensor: Map<string, MapSensor> = new Map<string, MapSensor>();
 
+let setWarningSensor: Set<string> = new Set<string>();
+
 class MessageController {
   constructor() {
     this.checkStateDevice();
@@ -112,9 +114,15 @@ class MessageController {
     }
   }
 
+  /**
+   * Cảnh báo khi thiết bị vượt ngưỡng
+   * Chỉ cảnh báo lần đầu vượt ngưỡng - trước đó hoạt động bình thường
+   * @param msg
+   */
   async processMessage(msg: MessageReportResults) {
     const thresHold = await this.getThresHold(msg.sensorId);
     if (thresHold) {
+      let sensorId = msg.sensorId;
       let rs = '';
       let warningCode = WarningCode.None;
       if (msg.power < thresHold.power) {
@@ -164,19 +172,25 @@ class MessageController {
 
       //  console.log(rs);
       if (rs) {
-        let notify = new NotifyWarning();
-        notify.sensorId = msg.sensorId;
-        notify.warningCode = warningCode;
-        eventService.emitwarning(notify);
+        logController.logWarning(sensorId, warningCode, rs);
 
-        logController.logWarning(msg.sensorId, warningCode, rs);
         let text = 'Hi Admin, \n';
-        text += `System active not right - Sensor ${msg.sensorId} detected \n`;
+        text += `System active not right - Sensor ${sensorId} detected \n`;
         text += rs;
         text += '\nDeveloper Team';
-        sendReport.sendMailReport('Sensor Warning', text, 'nguyenkhue2608@gmail.com', null);
-      }
-      deviceController.changWarningSensor(msg.sensorId, warningCode);
+
+        if (!setWarningSensor.has(sensorId)) {
+          sendReport.sendMailReport('Sensor Warning', text, 'nguyenkhue2608@gmail.com', null);
+
+          let notify = new NotifyWarning();
+          notify.sensorId = sensorId;
+          notify.warningCode = warningCode;
+          eventService.emitwarning(notify);
+        }
+
+        setWarningSensor.add(sensorId);
+      } else setWarningSensor.delete(sensorId);
+      deviceController.changWarningSensor(sensorId, warningCode);
     }
   }
 

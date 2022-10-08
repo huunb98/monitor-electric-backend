@@ -54,7 +54,5 @@ CmsRouter.post('/reloadConfig', (req, res) => {
             res.send(rs);
     });
 });
-CmsRouter.post('/updateGateway', (req, res) => { });
-CmsRouter.post('/updateSensor', (req, res) => { });
 exports.default = CmsRouter;
 //# sourceMappingURL=cmsRouters.js.map

@@ -49,7 +49,4 @@ CmsRouter.post('/reloadConfig', (req, res) => {
   });
 });
 
-CmsRouter.post('/updateGateway', (req, res) => {});
-CmsRouter.post('/updateSensor', (req, res) => {});
-
 export default CmsRouter;

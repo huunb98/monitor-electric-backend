@@ -27,6 +27,7 @@ const event_1 = require("../services/event/event");
 const sendReport = new sendReport_1.SendReport();
 exports.mapGateway = new Map();
 exports.mapSensor = new Map();
+let setWarningSensor = new Set();
 class MessageController {
     constructor() {
         this.checkStateDevice();
@@ -117,10 +118,16 @@ class MessageController {
             console.log('-- update device error --', error);
         }
     }
+    /**
+     * Cảnh báo khi thiết bị vượt ngưỡng
+     * Chỉ cảnh báo lần đầu vượt ngưỡng - trước đó hoạt động bình thường
+     * @param msg
+     */
     processMessage(msg) {
         return __awaiter(this, void 0, void 0, function* () {
             const thresHold = yield this.getThresHold(msg.sensorId);
             if (thresHold) {
+                let sensorId = msg.sensorId;
                 let rs = '';
                 let warningCode = warninghistory_1.WarningCode.None;
                 if (msg.power < thresHold.power) {
@@ -163,18 +170,23 @@ class MessageController {
                 }
                 //  console.log(rs);
                 if (rs) {
-                    let notify = new notify_1.NotifyWarning();
-                    notify.sensorId = msg.sensorId;
-                    notify.warningCode = warningCode;
-                    event_1.eventService.emitwarning(notify);
-                    logControllers_1.logController.logWarning(msg.sensorId, warningCode, rs);
+                    logControllers_1.logController.logWarning(sensorId, warningCode, rs);
                     let text = 'Hi Admin, \n';
-                    text += `System active not right - Sensor ${msg.sensorId} detected \n`;
+                    text += `System active not right - Sensor ${sensorId} detected \n`;
                     text += rs;
                     text += '\nDeveloper Team';
-                    sendReport.sendMailReport('Sensor Warning', text, 'nguyenkhue2608@gmail.com', null);
+                    if (!setWarningSensor.has(sensorId)) {
+                        sendReport.sendMailReport('Sensor Warning', text, 'nguyenkhue2608@gmail.com', null);
+                        let notify = new notify_1.NotifyWarning();
+                        notify.sensorId = sensorId;
+                        notify.warningCode = warningCode;
+                        event_1.eventService.emitwarning(notify);
+                    }
+                    setWarningSensor.add(sensorId);
                 }
-                deviceController_1.deviceController.changWarningSensor(msg.sensorId, warningCode);
+                else
+                    setWarningSensor.delete(sensorId);
+                deviceController_1.deviceController.changWarningSensor(sensorId, warningCode);
             }
         });
     }

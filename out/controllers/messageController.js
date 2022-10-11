@@ -34,6 +34,7 @@ class MessageController {
     }
     getRawData(topic, payload) {
         return __awaiter(this, void 0, void 0, function* () {
+            console.log(topic, payload.toString());
             const msgReportResults = yield this.getSensorAndMsg(topic, payload);
             if (msgReportResults)
                 this.processMessage(msgReportResults);
@@ -45,7 +46,6 @@ class MessageController {
                 let msg = new msgReportResults_1.MessageReportResults();
                 let data = JSON.parse(payload);
                 let key = Object.keys(data)[0];
-                logControllers_1.logController.logSensor(key, data[key]);
                 const gateway = topic.split('/')[1];
                 this.updateDevice(gateway, key);
                 const result = data[key];
@@ -73,6 +73,8 @@ class MessageController {
                 msg.z_peak_one_Hz = result.z_peak_one_Hz;
                 msg.z_peak_two_Hz = result.z_peak_two_Hz;
                 msg.z_peak_three_Hz = result.z_peak_three_Hz;
+                if (msg.temp && msg.power)
+                    logControllers_1.logController.logSensor(key, result);
                 return Promise.resolve(msg);
             }
             catch (error) {

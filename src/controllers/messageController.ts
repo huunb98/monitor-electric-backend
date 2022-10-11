@@ -26,6 +26,7 @@ class MessageController {
   }
 
   async getRawData(topic: string, payload: any) {
+    console.log(topic, payload.toString());
     const msgReportResults = await this.getSensorAndMsg(topic, payload);
 
     if (msgReportResults) this.processMessage(msgReportResults);
@@ -36,7 +37,6 @@ class MessageController {
       let msg = new MessageReportResults();
       let data = JSON.parse(payload);
       let key = Object.keys(data)[0];
-      logController.logSensor(key, data[key]);
 
       const gateway = topic.split('/')[1];
 
@@ -70,6 +70,9 @@ class MessageController {
       msg.z_peak_one_Hz = result.z_peak_one_Hz;
       msg.z_peak_two_Hz = result.z_peak_two_Hz;
       msg.z_peak_three_Hz = result.z_peak_three_Hz;
+
+      if (msg.temp && msg.power) logController.logSensor(key, result);
+
       return Promise.resolve(msg);
     } catch (error) {
       console.log(error);

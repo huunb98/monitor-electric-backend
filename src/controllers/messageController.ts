@@ -26,7 +26,6 @@ class MessageController {
   }
 
   async getRawData(topic: string, payload: any) {
-    console.log(topic, payload.toString());
     const msgReportResults = await this.getSensorAndMsg(topic, payload);
 
     if (msgReportResults) this.processMessage(msgReportResults);
@@ -40,7 +39,7 @@ class MessageController {
 
       const gateway = topic.split('/')[1];
 
-      this.updateDevice(gateway, key);
+      // this.updateDevice(gateway, key);
 
       const result = data[key];
 
@@ -77,43 +76,6 @@ class MessageController {
     } catch (error) {
       console.log(error);
       return Promise.resolve(null);
-    }
-  }
-
-  private updateDevice(gateway: string, sensor: string) {
-    try {
-      if (mapGateway.has(gateway)) {
-        mapGateway.get(gateway).lastUpdate = Date.now();
-        mapGateway.get(gateway).sensor.add(sensor);
-
-        if (mapGateway.get(gateway).disconnectCount) {
-          mapGateway.get(gateway).disconnectCount = 0;
-          deviceController.changeStateGateway(gateway, GatewayStatus.Active);
-        }
-      } else {
-        let gt = new MapGateway();
-        gt.lastUpdate = Date.now();
-        gt.sensor.add(sensor);
-        mapGateway.set(gateway, gt);
-        deviceController.changeStateGateway(gateway, GatewayStatus.Active);
-      }
-
-      if (mapSensor.has(sensor)) {
-        mapSensor.get(sensor).lastUpdate = Date.now();
-        if (mapSensor.get(sensor).disconnectCount) {
-          mapSensor.get(sensor).disconnectCount = 0;
-          deviceController.changeConnectStateSensor(sensor, ConnectStatus.Active);
-        }
-        mapSensor.get(sensor).disconnectCount = 0;
-      } else {
-        let ss = new MapSensor();
-        ss.lastUpdate = Date.now();
-        ss.gateway = gateway;
-        mapSensor.set(sensor, ss);
-        deviceController.changeConnectStateSensor(sensor, ConnectStatus.Active);
-      }
-    } catch (error) {
-      console.log('-- update device error --', error);
     }
   }
 
@@ -197,11 +159,50 @@ class MessageController {
     }
   }
 
+  private updateDevice(gateway: string, sensor: string) {
+    try {
+      if (mapGateway.has(gateway)) {
+        mapGateway.get(gateway).lastUpdate = Date.now();
+        mapGateway.get(gateway).sensor.add(sensor);
+
+        if (mapGateway.get(gateway).disconnectCount) {
+          mapGateway.get(gateway).disconnectCount = 0;
+          deviceController.changeStateGateway(gateway, GatewayStatus.Active);
+        }
+      } else {
+        let gt = new MapGateway();
+        gt.lastUpdate = Date.now();
+        gt.sensor.add(sensor);
+        mapGateway.set(gateway, gt);
+        deviceController.changeStateGateway(gateway, GatewayStatus.Active);
+      }
+
+      if (mapSensor.has(sensor)) {
+        mapSensor.get(sensor).lastUpdate = Date.now();
+        if (mapSensor.get(sensor).disconnectCount) {
+          mapSensor.get(sensor).disconnectCount = 0;
+          deviceController.changeConnectStateSensor(sensor, ConnectStatus.Active);
+        }
+        mapSensor.get(sensor).disconnectCount = 0;
+      } else {
+        let ss = new MapSensor();
+        ss.lastUpdate = Date.now();
+        ss.gateway = gateway;
+        mapSensor.set(sensor, ss);
+        deviceController.changeConnectStateSensor(sensor, ConnectStatus.Active);
+      }
+    } catch (error) {
+      console.log('-- update device error --', error);
+    }
+  }
+
   private async getThresHold(sensorId: string) {
     try {
-      const results = await SensorModel.findOne({ _id: sensorId }, { thresHold: 1 }).exec();
-      if (results) return results.thresHold;
-      else return null;
+      const results = await SensorModel.findOne({ sensorId: sensorId }, { thresHold: 1, sensorId: 1 }).exec();
+      if (results) {
+        this.updateDevice(results.gatewayId, sensorId);
+        return results.thresHold;
+      } else return null;
     } catch (error) {
       console.log(error);
       return null;

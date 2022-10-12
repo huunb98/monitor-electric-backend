@@ -53,12 +53,12 @@ class DeviceControllter {
             .catch((error) => console.log(error));
     }
     changeConnectStateSensor(id, state) {
-        sensor_1.SensorModel.updateOne({ _id: id }, { $set: { connectStatus: state } })
+        sensor_1.SensorModel.updateOne({ sensorId: id }, { $set: { connectStatus: state } })
             .then((_) => console.log('Change State Sensor'))
             .catch((error) => console.log(error));
     }
     changWarningSensor(id, code) {
-        sensor_1.SensorModel.updateOne({ _id: id }, { $set: { warningCode: code } })
+        sensor_1.SensorModel.updateOne({ sensorId: id }, { $set: { warningCode: code } })
             .then((_) => console.log('Change State Sensor'))
             .catch((error) => console.log(error));
     }

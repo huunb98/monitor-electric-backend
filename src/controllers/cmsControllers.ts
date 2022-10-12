@@ -37,8 +37,8 @@ class CmsController {
     const { sensorId, name, description, operationMode, connectStatus, systemId, gatewayId, thresHold, systemName, gatewayName } = req.body;
 
     const newSensor = new SensorModel({
-      _id: sensorId,
-      name: name,
+      sensorId: sensorId,
+      sensorName: name,
       description: description,
       operationMode: operationMode,
       connectStatus: connectStatus,

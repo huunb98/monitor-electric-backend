@@ -16,8 +16,8 @@ var ConnectStatus;
     ConnectStatus[ConnectStatus["DisconnectInternet"] = 2] = "DisconnectInternet";
 })(ConnectStatus = exports.ConnectStatus || (exports.ConnectStatus = {}));
 let sensorSchema = new mongoose.Schema({
-    _id: { type: String, require: true },
-    name: { type: String, require: true },
+    sensorId: { type: String, require: true },
+    sensorName: { type: String, require: true },
     description: { type: String, require: false },
     operationMode: { type: Number, require: true },
     connectStatus: { type: Number, default: ConnectStatus.Active },
@@ -65,9 +65,14 @@ let sensorSchema = new mongoose.Schema({
         default: Date.now,
     },
 }, { collection: 'Sensor' });
+sensorSchema.index({ sensorId: 1 }, {
+    unique: true,
+    sparse: true,
+    background: true,
+});
 sensorSchema.index({ gatewayId: 1 });
 sensorSchema.index({
-    name: 'text',
+    sensorName: 'text',
 }, {
     sparse: true,
     background: true,

@@ -34,7 +34,6 @@ class MessageController {
     }
     getRawData(topic, payload) {
         return __awaiter(this, void 0, void 0, function* () {
-            console.log(topic, payload.toString());
             const msgReportResults = yield this.getSensorAndMsg(topic, payload);
             if (msgReportResults)
                 this.processMessage(msgReportResults);
@@ -47,7 +46,7 @@ class MessageController {
                 let data = JSON.parse(payload);
                 let key = Object.keys(data)[0];
                 const gateway = topic.split('/')[1];
-                this.updateDevice(gateway, key);
+                // this.updateDevice(gateway, key);
                 const result = data[key];
                 msg.sensorId = key;
                 msg.power = result.battery_level;
@@ -82,43 +81,6 @@ class MessageController {
                 return Promise.resolve(null);
             }
         });
-    }
-    updateDevice(gateway, sensor) {
-        try {
-            if (exports.mapGateway.has(gateway)) {
-                exports.mapGateway.get(gateway).lastUpdate = Date.now();
-                exports.mapGateway.get(gateway).sensor.add(sensor);
-                if (exports.mapGateway.get(gateway).disconnectCount) {
-                    exports.mapGateway.get(gateway).disconnectCount = 0;
-                    deviceController_1.deviceController.changeStateGateway(gateway, gateway_1.GatewayStatus.Active);
-                }
-            }
-            else {
-                let gt = new checkState_1.MapGateway();
-                gt.lastUpdate = Date.now();
-                gt.sensor.add(sensor);
-                exports.mapGateway.set(gateway, gt);
-                deviceController_1.deviceController.changeStateGateway(gateway, gateway_1.GatewayStatus.Active);
-            }
-            if (exports.mapSensor.has(sensor)) {
-                exports.mapSensor.get(sensor).lastUpdate = Date.now();
-                if (exports.mapSensor.get(sensor).disconnectCount) {
-                    exports.mapSensor.get(sensor).disconnectCount = 0;
-                    deviceController_1.deviceController.changeConnectStateSensor(sensor, sensor_1.ConnectStatus.Active);
-                }
-                exports.mapSensor.get(sensor).disconnectCount = 0;
-            }
-            else {
-                let ss = new checkState_1.MapSensor();
-                ss.lastUpdate = Date.now();
-                ss.gateway = gateway;
-                exports.mapSensor.set(sensor, ss);
-                deviceController_1.deviceController.changeConnectStateSensor(sensor, sensor_1.ConnectStatus.Active);
-            }
-        }
-        catch (error) {
-            console.log('-- update device error --', error);
-        }
     }
     /**
      * Cảnh báo khi thiết bị vượt ngưỡng
@@ -192,12 +154,51 @@ class MessageController {
             }
         });
     }
+    updateDevice(gateway, sensor) {
+        try {
+            if (exports.mapGateway.has(gateway)) {
+                exports.mapGateway.get(gateway).lastUpdate = Date.now();
+                exports.mapGateway.get(gateway).sensor.add(sensor);
+                if (exports.mapGateway.get(gateway).disconnectCount) {
+                    exports.mapGateway.get(gateway).disconnectCount = 0;
+                    deviceController_1.deviceController.changeStateGateway(gateway, gateway_1.GatewayStatus.Active);
+                }
+            }
+            else {
+                let gt = new checkState_1.MapGateway();
+                gt.lastUpdate = Date.now();
+                gt.sensor.add(sensor);
+                exports.mapGateway.set(gateway, gt);
+                deviceController_1.deviceController.changeStateGateway(gateway, gateway_1.GatewayStatus.Active);
+            }
+            if (exports.mapSensor.has(sensor)) {
+                exports.mapSensor.get(sensor).lastUpdate = Date.now();
+                if (exports.mapSensor.get(sensor).disconnectCount) {
+                    exports.mapSensor.get(sensor).disconnectCount = 0;
+                    deviceController_1.deviceController.changeConnectStateSensor(sensor, sensor_1.ConnectStatus.Active);
+                }
+                exports.mapSensor.get(sensor).disconnectCount = 0;
+            }
+            else {
+                let ss = new checkState_1.MapSensor();
+                ss.lastUpdate = Date.now();
+                ss.gateway = gateway;
+                exports.mapSensor.set(sensor, ss);
+                deviceController_1.deviceController.changeConnectStateSensor(sensor, sensor_1.ConnectStatus.Active);
+            }
+        }
+        catch (error) {
+            console.log('-- update device error --', error);
+        }
+    }
     getThresHold(sensorId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const results = yield sensor_1.SensorModel.findOne({ _id: sensorId }, { thresHold: 1 }).exec();
-                if (results)
+                const results = yield sensor_1.SensorModel.findOne({ sensorId: sensorId }, { thresHold: 1, sensorId: 1 }).exec();
+                if (results) {
+                    this.updateDevice(results.gatewayId, sensorId);
                     return results.thresHold;
+                }
                 else
                     return null;
             }

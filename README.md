@@ -2,7 +2,7 @@
 Getting started:
 - Clone this repo
 - Run npm install to install all dependencies
-- Add enviroment for mongodb service
+- Add enviroment .env file
 
 Application Feature:
 - Listen topic from mqtt

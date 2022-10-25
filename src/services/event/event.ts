@@ -9,6 +9,7 @@ class EventService {
 
   onWarning(io) {
     this.event.on('warning', (message) => {
+      console.log('on warning msg', message);
       io.sockets.emit('message', message);
     });
   }

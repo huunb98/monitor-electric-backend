@@ -144,6 +144,7 @@ class MessageController {
                         let notify = new notify_1.NotifyWarning();
                         notify.sensorId = sensorId;
                         notify.warningCode = warningCode;
+                        notify.msg = rs;
                         event_1.eventService.emitwarning(notify);
                     }
                     setWarningSensor.add(sensorId);

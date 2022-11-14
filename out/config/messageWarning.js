@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.MsgWarning = void 0;
+exports.titleWarning = exports.MsgWarning = void 0;
 var MsgWarning;
 (function (MsgWarning) {
     MsgWarning["power"] = "Battery Low";
@@ -27,4 +27,5 @@ var MsgWarning;
     MsgWarning["z_peak_two_Hz"] = "Z over value";
     MsgWarning["z_peak_three_Hz"] = "Z over value";
 })(MsgWarning = exports.MsgWarning || (exports.MsgWarning = {}));
+exports.titleWarning = 'Hệ thống giám sát động cơ điện cảnh báo';
 //# sourceMappingURL=messageWarning.js.map

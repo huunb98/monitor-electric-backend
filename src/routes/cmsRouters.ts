@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import { AnalysisData } from '../controllers/analysisData';
 import { cmsController } from '../controllers/cmsControllers';
 var CmsRouter = Router();
 
@@ -46,6 +47,16 @@ CmsRouter.post('/reloadConfig', (req, res) => {
       res.status(400).send(err);
       return;
     } else res.send(rs);
+  });
+});
+
+CmsRouter.get('/analysData', (req, res) => {
+  const { sensorId, start, end, fields } = req.query;
+  if (!sensorId || !start || !end || !fields) return res.status(400).send('Invalid parameter!');
+
+  new AnalysisData().getReport(sensorId, start, end, fields, (error, reponse) => {
+    if (error) return res.status(400).send(error);
+    else res.send(reponse);
   });
 });
 

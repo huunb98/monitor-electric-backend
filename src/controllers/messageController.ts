@@ -3,7 +3,7 @@ import { ConnectStatus, SensorModel } from '../models/sensor';
 import { logController } from './logControllers';
 import { mapBroker, initSubTopic } from '../services/database/initConfig';
 import { MessageReportResults } from '../helpers/msgReportResults';
-import { MsgWarning } from '../config/messageWarning';
+import { MsgWarning, titleWarning } from '../config/messageWarning';
 import { WarningCode } from '../models/warninghistory';
 import { SendReport } from '../services/mail/sendReport';
 import { MapGateway, MapSensor } from '../helpers/checkState';
@@ -12,6 +12,7 @@ import { deviceController } from './deviceController';
 import { GatewayStatus } from '../models/gateway';
 import { NotifyWarning } from '../config/notify';
 import { eventService } from '../services/event/event';
+import { DateHelper } from '../helpers/dateHelper';
 
 const sendReport = new SendReport();
 
@@ -85,7 +86,9 @@ class MessageController {
    * @param msg
    */
   async processMessage(msg: MessageReportResults) {
-    const thresHold = await this.getThresHold(msg.sensorId);
+    const response = await this.getThresHold(msg.sensorId);
+    const thresHold = response.thresHold;
+
     if (thresHold) {
       let sensorId = msg.sensorId;
       let rs = '';
@@ -139,13 +142,12 @@ class MessageController {
       if (rs) {
         logController.logWarning(sensorId, warningCode, rs);
 
-        let text = 'Hi Admin, \n';
-        text += `System active not right - Sensor ${sensorId} detected \n`;
-        text += rs;
-        text += '\nDeveloper Team';
-
         if (!setWarningSensor.has(sensorId)) {
-          sendReport.sendMailReport('Sensor Warning', text, 'nguyenkhue2608@gmail.com', null);
+          const localTime = new DateHelper().getLocalTime();
+          let text = `Thiết bị ${response.sensorName} với ID: ${sensorId} cảnh báo ${rs} lúc ${localTime}. Đề nghị đơn vị kiểm tra!`;
+
+          // Note: them load mail tu database
+          sendReport.sendMailReport(titleWarning, text, 'nguyenkhue2608@gmail.com', null);
 
           let notify = new NotifyWarning();
           notify.sensorId = sensorId;
@@ -199,10 +201,13 @@ class MessageController {
 
   private async getThresHold(sensorId: string) {
     try {
-      const results = await SensorModel.findOne({ sensorId: sensorId }, { thresHold: 1, sensorId: 1 }).exec();
+      const results = await SensorModel.findOne({ sensorId: sensorId }, { thresHold: 1, sensorId: 1, sensorName: 1 }).exec();
       if (results) {
         this.updateDevice(results.gatewayId, sensorId);
-        return results.thresHold;
+        return {
+          thresHold: results.thresHold,
+          sensorName: results.sensorName,
+        };
       } else return null;
     } catch (error) {
       console.log(error);

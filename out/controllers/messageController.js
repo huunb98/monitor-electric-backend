@@ -24,6 +24,7 @@ const deviceController_1 = require("./deviceController");
 const gateway_1 = require("../models/gateway");
 const notify_1 = require("../config/notify");
 const event_1 = require("../services/event/event");
+const dateHelper_1 = require("../helpers/dateHelper");
 const sendReport = new sendReport_1.SendReport();
 exports.mapGateway = new Map();
 exports.mapSensor = new Map();
@@ -89,7 +90,8 @@ class MessageController {
      */
     processMessage(msg) {
         return __awaiter(this, void 0, void 0, function* () {
-            const thresHold = yield this.getThresHold(msg.sensorId);
+            const response = yield this.getThresHold(msg.sensorId);
+            const thresHold = response.thresHold;
             if (thresHold) {
                 let sensorId = msg.sensorId;
                 let rs = '';
@@ -135,12 +137,11 @@ class MessageController {
                 //  console.log(rs);
                 if (rs) {
                     logControllers_1.logController.logWarning(sensorId, warningCode, rs);
-                    let text = 'Hi Admin, \n';
-                    text += `System active not right - Sensor ${sensorId} detected \n`;
-                    text += rs;
-                    text += '\nDeveloper Team';
                     if (!setWarningSensor.has(sensorId)) {
-                        sendReport.sendMailReport('Sensor Warning', text, 'nguyenkhue2608@gmail.com', null);
+                        const localTime = new dateHelper_1.DateHelper().getLocalTime();
+                        let text = `Thiết bị ${response.sensorName} với ID: ${sensorId} cảnh báo ${rs} lúc ${localTime}. Đề nghị đơn vị kiểm tra!`;
+                        // Note: them load mail tu database
+                        sendReport.sendMailReport(messageWarning_1.titleWarning, text, 'nguyenkhue2608@gmail.com', null);
                         let notify = new notify_1.NotifyWarning();
                         notify.sensorId = sensorId;
                         notify.warningCode = warningCode;
@@ -195,10 +196,13 @@ class MessageController {
     getThresHold(sensorId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const results = yield sensor_1.SensorModel.findOne({ sensorId: sensorId }, { thresHold: 1, sensorId: 1 }).exec();
+                const results = yield sensor_1.SensorModel.findOne({ sensorId: sensorId }, { thresHold: 1, sensorId: 1, sensorName: 1 }).exec();
                 if (results) {
                     this.updateDevice(results.gatewayId, sensorId);
-                    return results.thresHold;
+                    return {
+                        thresHold: results.thresHold,
+                        sensorName: results.sensorName,
+                    };
                 }
                 else
                     return null;

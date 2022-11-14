@@ -33,7 +33,7 @@ export interface ThresHold {
 
 export interface ISensor {
   sensorId: string;
-  name: string;
+  sensorName: string;
   description: string;
   operationMode: OperationMode;
   connectStatus: ConnectStatus;

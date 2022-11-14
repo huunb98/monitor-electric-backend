@@ -23,3 +23,5 @@ export enum MsgWarning {
   z_peak_two_Hz = 'Z over value',
   z_peak_three_Hz = 'Z over value',
 }
+
+export const titleWarning = 'Hệ thống giám sát động cơ điện cảnh báo';

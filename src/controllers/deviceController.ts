@@ -1,9 +1,9 @@
 import { DisconectConfig } from '../config/disconnect';
+import { titleWarning } from '../config/messageWarning';
 import { GatewayModel, GatewayStatus } from '../models/gateway';
 import { ConnectStatus, SensorModel } from '../models/sensor';
 import { WarningCode } from '../models/warninghistory';
 import { SendReport } from '../services/mail/sendReport';
-import { logController } from './logControllers';
 import { mapGateway, mapSensor } from './messageController';
 
 class DeviceControllter {
@@ -19,7 +19,7 @@ class DeviceControllter {
           let msg = `Gateway ${key} disconected, check it now\n\nDeveloper Team`;
           console.log(msg);
 
-          new SendReport().sendMailReport('Gateway Disconect', msg, 'nguyenkhue2608@gmail.com', null);
+          new SendReport().sendMailReport(titleWarning, msg, 'nguyenkhue2608@gmail.com', null);
         }
         if (value.disconnectCount > 20) {
           mapGateway.delete(key);
@@ -43,7 +43,7 @@ class DeviceControllter {
         if (value.disconnectCount === 10 || value.disconnectCount < 2) {
           let msg = `Sensor ${key} disconected, check it now\n\nDeveloper Team`;
           console.log(msg);
-          new SendReport().sendMailReport('Sensor Disconect', msg, 'nguyenkhue2608@gmail.com', null);
+          new SendReport().sendMailReport(titleWarning, msg, 'nguyenkhue2608@gmail.com', null);
         }
         if (value.disconnectCount > 20) {
           mapSensor.delete(key);

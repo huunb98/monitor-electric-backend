@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deviceController = void 0;
 const disconnect_1 = require("../config/disconnect");
+const messageWarning_1 = require("../config/messageWarning");
 const gateway_1 = require("../models/gateway");
 const sensor_1 = require("../models/sensor");
 const sendReport_1 = require("../services/mail/sendReport");
@@ -17,7 +18,7 @@ class DeviceControllter {
                 if (value.disconnectCount === 10 || value.disconnectCount < 2) {
                     let msg = `Gateway ${key} disconected, check it now\n\nDeveloper Team`;
                     console.log(msg);
-                    new sendReport_1.SendReport().sendMailReport('Gateway Disconect', msg, 'nguyenkhue2608@gmail.com', null);
+                    new sendReport_1.SendReport().sendMailReport(messageWarning_1.titleWarning, msg, 'nguyenkhue2608@gmail.com', null);
                 }
                 if (value.disconnectCount > 20) {
                     messageController_1.mapGateway.delete(key);
@@ -38,7 +39,7 @@ class DeviceControllter {
                 if (value.disconnectCount === 10 || value.disconnectCount < 2) {
                     let msg = `Sensor ${key} disconected, check it now\n\nDeveloper Team`;
                     console.log(msg);
-                    new sendReport_1.SendReport().sendMailReport('Sensor Disconect', msg, 'nguyenkhue2608@gmail.com', null);
+                    new sendReport_1.SendReport().sendMailReport(messageWarning_1.titleWarning, msg, 'nguyenkhue2608@gmail.com', null);
                 }
                 if (value.disconnectCount > 20) {
                     messageController_1.mapSensor.delete(key);

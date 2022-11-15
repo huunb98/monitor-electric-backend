@@ -16,7 +16,7 @@ class DeviceControllter {
         if (value.disconnectCount < 2) this.changeStateGateway(key, GatewayStatus.Disconnect);
 
         if (value.disconnectCount === 10 || value.disconnectCount < 2) {
-          let msg = `Gateway ${key} disconected, check it now\n\nDeveloper Team`;
+          let msg = `Gateway với ID ${key} mất kết nối. Đề nghị đơn vị kiểm tra!`;
           console.log(msg);
 
           new SendReport().sendMailReport(titleWarning, msg, 'nguyenkhue2608@gmail.com', null);
@@ -41,7 +41,7 @@ class DeviceControllter {
         if (value.disconnectCount < 2) this.changeConnectStateSensor(key, ConnectStatus.DisconnectGateway);
 
         if (value.disconnectCount === 10 || value.disconnectCount < 2) {
-          let msg = `Sensor ${key} disconected, check it now\n\nDeveloper Team`;
+          let msg = `Sensor với ID ${key} mất kết nối. Đề nghị đơn vị kiểm tra!`;
           console.log(msg);
           new SendReport().sendMailReport(titleWarning, msg, 'nguyenkhue2608@gmail.com', null);
         }

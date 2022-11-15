@@ -87,8 +87,12 @@ class MessageController {
    */
   async processMessage(msg: MessageReportResults) {
     const response = await this.getThresHold(msg.sensorId);
-    const thresHold = response.thresHold;
 
+    if (!response) {
+      console.log('Sensor missing', msg.sensorId);
+      return;
+    }
+    const thresHold = response.thresHold;
     if (thresHold) {
       let sensorId = msg.sensorId;
       let rs = '';

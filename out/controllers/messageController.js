@@ -91,6 +91,10 @@ class MessageController {
     processMessage(msg) {
         return __awaiter(this, void 0, void 0, function* () {
             const response = yield this.getThresHold(msg.sensorId);
+            if (!response) {
+                console.log('Sensor missing', msg.sensorId);
+                return;
+            }
             const thresHold = response.thresHold;
             if (thresHold) {
                 let sensorId = msg.sensorId;

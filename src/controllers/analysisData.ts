@@ -1,6 +1,12 @@
 import { ISensorHistoryDocument, SensorHistoryModel } from '../models/sensorhistory';
+import { AnalysisResults } from '../helpers/analysisResults';
 
 export class AnalysisData {
+  private sampleRate: number;
+  constructor() {
+    this.sampleRate = 1;
+  }
+
   async getReport(sensorId, startDate, endDate, fields, callback: Function) {
     let start = new Date(startDate);
     let end = new Date(endDate);
@@ -12,7 +18,7 @@ export class AnalysisData {
     let mapThresHold: Object = {};
     for (const index of rawData) {
       for (const field of lsField) {
-        const value = parseInt(index.log[field]);
+        const value = Math.round(+index.log[field]);
         if (mapThresHold[field]) {
           let data = mapThresHold[field];
           if (data[value]) {
@@ -27,7 +33,22 @@ export class AnalysisData {
         }
       }
     }
-    callback(null, mapThresHold);
+    const key = Object.keys(mapThresHold);
+
+    let results: AnalysisResults[] = [];
+
+    key.forEach((index) => {
+      let sets = Object.keys(mapThresHold[index]);
+      sets.forEach((set) => {
+        let result = new AnalysisResults();
+        result.field = index;
+        result.value = +set;
+        result.count = mapThresHold[index][set];
+        results.push(result);
+      });
+    });
+
+    callback(null, results);
   }
 
   private async getRawData(sensorId: string, startDate: Date, endDate: Date): Promise<ISensorHistoryDocument[]> {

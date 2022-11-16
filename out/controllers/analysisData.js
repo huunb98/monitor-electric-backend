@@ -11,7 +11,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AnalysisData = void 0;
 const sensorhistory_1 = require("../models/sensorhistory");
+const analysisResults_1 = require("../helpers/analysisResults");
 class AnalysisData {
+    constructor() {
+        this.sampleRate = 1;
+    }
     getReport(sensorId, startDate, endDate, fields, callback) {
         return __awaiter(this, void 0, void 0, function* () {
             let start = new Date(startDate);
@@ -22,7 +26,7 @@ class AnalysisData {
             let mapThresHold = {};
             for (const index of rawData) {
                 for (const field of lsField) {
-                    const value = parseInt(index.log[field]);
+                    const value = Math.round(+index.log[field]);
                     if (mapThresHold[field]) {
                         let data = mapThresHold[field];
                         if (data[value]) {
@@ -40,7 +44,19 @@ class AnalysisData {
                     }
                 }
             }
-            callback(null, mapThresHold);
+            const key = Object.keys(mapThresHold);
+            let results = [];
+            key.forEach((index) => {
+                let sets = Object.keys(mapThresHold[index]);
+                sets.forEach((set) => {
+                    let result = new analysisResults_1.AnalysisResults();
+                    result.field = index;
+                    result.value = +set;
+                    result.count = mapThresHold[index][set];
+                    results.push(result);
+                });
+            });
+            callback(null, results);
         });
     }
     getRawData(sensorId, startDate, endDate) {

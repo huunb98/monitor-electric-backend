@@ -35,6 +35,7 @@ export interface ISensor {
   sensorId: string;
   sensorName: string;
   description: string;
+  currentPower: number;
   operationMode: OperationMode;
   connectStatus: ConnectStatus;
   warningCode: WarningCode;
@@ -52,6 +53,7 @@ let sensorSchema = new mongoose.Schema(
     sensorName: { type: String, require: true },
     description: { type: String, require: false },
     operationMode: { type: Number, require: true },
+    currentPower: Number,
     connectStatus: { type: Number, default: ConnectStatus.Active },
     warningCode: { type: Number, default: WarningCode.None },
     systemId: { type: mongoose.Schema.Types.ObjectId, require: true, ref: 'System' },

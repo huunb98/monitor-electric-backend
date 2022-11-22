@@ -20,6 +20,7 @@ let sensorSchema = new mongoose.Schema({
     sensorName: { type: String, require: true },
     description: { type: String, require: false },
     operationMode: { type: Number, require: true },
+    currentPower: Number,
     connectStatus: { type: Number, default: ConnectStatus.Active },
     warningCode: { type: Number, default: warninghistory_1.WarningCode.None },
     systemId: { type: mongoose.Schema.Types.ObjectId, require: true, ref: 'System' },

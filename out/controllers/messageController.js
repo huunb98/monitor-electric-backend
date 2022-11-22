@@ -73,8 +73,10 @@ class MessageController {
                 msg.z_peak_one_Hz = result.z_peak_one_Hz;
                 msg.z_peak_two_Hz = result.z_peak_two_Hz;
                 msg.z_peak_three_Hz = result.z_peak_three_Hz;
-                if (msg.temp && msg.power)
+                if (msg.temp && msg.power) {
                     logControllers_1.logController.logSensor(key, result);
+                    deviceController_1.deviceController.updateBattery(key, +msg.power);
+                }
                 return Promise.resolve(msg);
             }
             catch (error) {

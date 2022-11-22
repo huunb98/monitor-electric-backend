@@ -70,5 +70,11 @@ class DeviceControllter {
       .then((_) => console.log('Change State Sensor'))
       .catch((error) => console.log(error));
   }
+
+  updateBattery(id: string, value: number) {
+    SensorModel.updateOne({ sensorId: id }, { $set: { currentPower: value } })
+      .then((_) => console.log('Change State Sensor'))
+      .catch((error) => console.log(error));
+  }
 }
 export const deviceController = new DeviceControllter();

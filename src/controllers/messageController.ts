@@ -154,7 +154,7 @@ class MessageController {
           let text = `Thiết bị ${response.sensorName} với ID: ${sensorId} cảnh báo ${rs} lúc ${localTime}. Đề nghị đơn vị kiểm tra!`;
 
           // Note: them load mail tu database
-          sendReport.sendMailReport(titleWarning, text, 'nguyenkhue2608@gmail.com', null);
+          sendReport.sendMailReport(titleWarning, text, process.env.ReceiveEmail, null);
 
           let notify = new NotifyWarning();
           notify.sensorId = sensorId;

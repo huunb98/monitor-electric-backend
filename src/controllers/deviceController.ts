@@ -19,7 +19,7 @@ class DeviceControllter {
           let msg = `Gateway với ID ${key} mất kết nối. Đề nghị đơn vị kiểm tra!`;
           console.log(msg);
 
-          new SendReport().sendMailReport(titleWarning, msg, 'nguyenkhue2608@gmail.com', null);
+          new SendReport().sendMailReport(titleWarning, msg, process.env.ReceiveEmail, null);
         }
         if (value.disconnectCount > 20) {
           mapGateway.delete(key);
@@ -43,7 +43,7 @@ class DeviceControllter {
         if (value.disconnectCount === 10 || value.disconnectCount < 2) {
           let msg = `Sensor với ID ${key} mất kết nối. Đề nghị đơn vị kiểm tra!`;
           console.log(msg);
-          new SendReport().sendMailReport(titleWarning, msg, 'nguyenkhue2608@gmail.com', null);
+          new SendReport().sendMailReport(titleWarning, msg, process.env.ReceiveEmail, null);
         }
         if (value.disconnectCount > 20) {
           mapSensor.delete(key);

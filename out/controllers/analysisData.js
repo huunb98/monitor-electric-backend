@@ -12,21 +12,26 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AnalysisData = void 0;
 const sensorhistory_1 = require("../models/sensorhistory");
 const analysisResults_1 = require("../helpers/analysisResults");
+const sensor_1 = require("../models/sensor");
 class AnalysisData {
     constructor() {
         this.sampleRate = 1;
     }
-    getReport(sensorId, startDate, endDate, fields, callback) {
+    getReport(sensorName, sensorId, startDate, endDate, fields, callback) {
         return __awaiter(this, void 0, void 0, function* () {
             let start = new Date(startDate);
             let end = new Date(endDate);
             const lsField = fields.split(',');
             console.log(lsField);
+            if (sensorName)
+                sensorId = yield this.genSensorId(sensorName);
             let rawData = yield this.getRawData(sensorId, start, end);
             let mapThresHold = {};
             for (const index of rawData) {
                 for (const field of lsField) {
                     const value = Math.round(+index.log[field]);
+                    if (value === 0)
+                        continue;
                     if (mapThresHold[field]) {
                         let data = mapThresHold[field];
                         if (data[value]) {
@@ -57,6 +62,21 @@ class AnalysisData {
                 });
             });
             callback(null, results);
+        });
+    }
+    genSensorId(sensorName) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                let data = yield sensor_1.SensorModel.findOne({ sensorName: sensorName }, { sensorId: 1 });
+                if (data)
+                    return Promise.resolve(data.sensorId);
+                else
+                    return Promise.resolve('');
+            }
+            catch (error) {
+                console.log(error);
+                return Promise.resolve('');
+            }
         });
     }
     getRawData(sensorId, startDate, endDate) {

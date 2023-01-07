@@ -50,11 +50,11 @@ CmsRouter.post('/reloadConfig', (req, res) => {
   });
 });
 
-CmsRouter.get('/analysData', (req, res) => {
-  const { sensorId, start, end, fields } = req.query;
-  if (!sensorId || !start || !end || !fields) return res.status(400).send('Invalid parameter!');
-
-  new AnalysisData().getReport(sensorId, start, end, fields, (error, reponse) => {
+CmsRouter.get('/analysData', async (req, res) => {
+  const { sensorId, start, end, fields, sensorName } = req.query;
+  if (!start || !end || !fields) return res.status(400).send('Invalid parameter!');
+  if (!sensorId && !sensorName) return res.status(400).send('Invalid parameter!');
+  new AnalysisData().getReport(sensorName, sensorId, start, end, fields, (error, reponse) => {
     if (error) return res.status(400).send(error);
     else res.send(reponse);
   });

@@ -9,5 +9,6 @@
     "esModuleInterop": true,
     "experimentalDecorators": true,
     "types": ["node"]
-  }
+  },
+  "include": ["src/**/*"]
 }
